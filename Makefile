@@ -13,3 +13,6 @@ start-frontend:
 
 install:
 	npm ci
+
+develop:
+	make start-backend & make start-frontend
