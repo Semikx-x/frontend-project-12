@@ -7,3 +7,6 @@ start:
 
 start-backend:
 	npx start-server -s ./frontend/dist
+
+start-frontend:
+	make -C frontend start
