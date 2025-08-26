@@ -10,3 +10,6 @@ start-backend:
 
 start-frontend:
 	make -C frontend start
+
+install:
+	npm ci
