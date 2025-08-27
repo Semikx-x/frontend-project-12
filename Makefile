@@ -1,5 +1,6 @@
 build:
-	rm -rf frontend/dist
+	cd frontend
+	npm ci
 	npm run build
 
 start:
