@@ -1,5 +1,5 @@
 import './App.css'
-import {Login} from './pages/login.jsx'
+import {Login, NotF} from './pages'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 
@@ -8,7 +8,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         {<Login/>}
-        <Route path="login" element={<Login/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/*" element={<NotF/>}/>
       </Routes>
     </BrowserRouter>
   )
