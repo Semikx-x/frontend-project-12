@@ -1,4 +1,4 @@
-import { LoginForm } from "../Form/Form"
+import { LoginForm } from "../Form/Form.jsx"
 
 const Login = () => {
   return (
