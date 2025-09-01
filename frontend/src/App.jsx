@@ -1,5 +1,6 @@
 import './App.css'
-import {Login, NotF} from './pages'
+import { Login } from './pages/login.jsx'
+import { NotF } from './pages/Notfound.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 
