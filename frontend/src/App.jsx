@@ -8,7 +8,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {<Login/>}
         <Route path="/login" element={<Login/>}/>
         <Route path="/*" element={<NotF/>}/>
       </Routes>
