@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "formik": "^2.4.6",
+    "frontend": "file:",
     "lorem-ipsum": "^2.0.8",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

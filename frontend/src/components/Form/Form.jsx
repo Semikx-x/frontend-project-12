@@ -9,22 +9,25 @@ export const LoginForm = () => {
       initialValues={initialValues}
       onSubmit={() => console.log("Done!")}
     >
-      <Form className="col-12 col-md-6 mt-3 mt-md-0">
-        <h1 className="text-center mb-4">Войти</h1>
-        <Input
-          label="Ваш ник"
-          name="userName"
-          id="userName"
-          placehplder="Ваш ник"
-        />
-        <Input
-          label="Пароль"
-          name="password"
-          id="password"
-          placehplder="Пароль"
-        />
-        <LogButton>Войти</LogButton>
-      </Form>
+      {() => (
+        <Form className="col-12 col-md-6 mt-3 mt-md-0">
+          <h1 className="text-center mb-4">Войти</h1>
+          <Input
+            label="Ваш ник"
+            name="userName"
+            id="userName"
+            placeholder="Ваш ник"
+          />
+          <Input
+            label="Пароль"
+            name="password"
+            id="password"
+            placeholder="Пароль"
+          />
+          <LogButton>Войти</LogButton>
+        </Form>
+      )}
     </Formik>
   )
 }
+

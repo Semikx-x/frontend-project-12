@@ -1,6 +1,6 @@
 import { Field, ErrorMessage as Error } from "formik";
 
-export const Input = (id, label, name, placeholder) => {
+export const Input = ({id, label, name, placeholder}) => {
   return (
     <div className="form-floating mb-3">
       <label htmlFor={id}>{label}</label>
