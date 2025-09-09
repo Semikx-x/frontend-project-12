@@ -7,7 +7,7 @@ export const LoginForm = () => {
   return (
     <Formik 
       initialValues={initialValues}
-      onSubmit={() => console.log("Done!")}
+      onSubmit={() => console.log({initialValues})}
     >
       {() => (
         <Form className="col-12 col-md-6 mt-3 mt-md-0">

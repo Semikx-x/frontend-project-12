@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
+    "axios": "^1.11.0",
     "formik": "^2.4.6",
     "frontend": "file:",
     "lorem-ipsum": "^2.0.8",
