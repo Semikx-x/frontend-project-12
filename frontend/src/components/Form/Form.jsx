@@ -19,7 +19,7 @@ export const LoginForm = () => {
   useEffect(() => {
     console.log('useEffect сработал, status:', status, 'isAuth:', isAuth)
     
-    if (status === 'succeeded' ? auth === true) {
+    if (status === 'succeeded' && auth === true) {
       console.log('Редирект на /main')
       navigate('/main', { replace: true })
     }
