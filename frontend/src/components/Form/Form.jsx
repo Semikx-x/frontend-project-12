@@ -1,21 +1,41 @@
 import {Formik, Form} from 'formik'
-import { initialValues, loginToken } from './helper.js'
+import { initialValues } from './helper.js'
 import { Input } from '../input/Input.jsx'
 import { LogButton } from '../Buttons/Button.jsx'
+import { useEffect } from 'react'
+import { fetchJWS, selectStatus, selectError, selectAuth } from '../slices/LoginSlice.js'
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 
 export const LoginForm = () => {
+  console.log('LoginForm компонент загружен')
+  const dispatch = useDispatch()
   const navigate = useNavigate()
-  
+
+  const status = useSelector(selectStatus)
+  const error = useSelector(selectError)
+  const isAuth = useSelector(selectAuth)
+
+  // useEffect(() => {
+  //   console.log('useEffect сработал, status:', status, 'isAuth:', isAuth)
+    
+  //   if (status === 'succeeded' || isAuth) {
+  //     console.log('Редирект на /main')
+  //     navigate('/main', { replace: true })
+  //   }
+  // }, [status, isAuth, navigate])
+
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      await loginToken(values)
-      navigate('/', { replace: true })
-    }
-    catch (error) {
-      setErrors({ general: error.message || 'Неверный логин или пароль' })
-    }
-    finally {
+      const result = await dispatch(fetchJWS(values))
+      
+      if (fetchJWS.fulfilled.match(result)) {
+      } else if (fetchJWS.rejected.match(result)) {
+        setErrors({ general: result.payload })
+      }
+    } catch (err) {
+      setErrors({ general: 'Произошла ошибка' })
+    } finally {
       setSubmitting(false)
     }
   }
@@ -25,7 +45,7 @@ export const LoginForm = () => {
       initialValues={initialValues}
       onSubmit={handleSubmit}
     >
-      {({ isSubmitting, errors}) => (
+      {({ isSubmitting, errors, touched }) => (
         <Form className="col-12 col-md-6 mt-3 mt-md-0">
           <h1 className="text-center mb-4">Войти</h1>
           <Input

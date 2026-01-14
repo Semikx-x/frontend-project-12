@@ -1,3 +1,4 @@
+import React from 'react';
 import { Field, ErrorMessage as Error } from "formik";
 
 export const Input = ({id, label, name, placeholder}) => {
