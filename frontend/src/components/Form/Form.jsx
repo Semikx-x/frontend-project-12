@@ -16,14 +16,14 @@ export const LoginForm = () => {
   const error = useSelector(selectError)
   const isAuth = useSelector(selectAuth)
 
-  // useEffect(() => {
-  //   console.log('useEffect сработал, status:', status, 'isAuth:', isAuth)
+  useEffect(() => {
+    console.log('useEffect сработал, status:', status, 'isAuth:', isAuth)
     
-  //   if (status === 'succeeded' || isAuth) {
-  //     console.log('Редирект на /main')
-  //     navigate('/main', { replace: true })
-  //   }
-  // }, [status, isAuth, navigate])
+    if (status === 'succeeded' || isAuth) {
+      console.log('Редирект на /main')
+      navigate('/main', { replace: true })
+    }
+  }, [status, isAuth, navigate])
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
