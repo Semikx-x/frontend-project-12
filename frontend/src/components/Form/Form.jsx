@@ -19,11 +19,11 @@ export const LoginForm = () => {
   useEffect(() => {
     console.log('useEffect сработал, status:', status, 'isAuth:', isAuth)
     
-    if (status === 'succeeded' || isAuth) {
+    if (status === 'succeeded') {
       console.log('Редирект на /main')
       navigate('/main', { replace: true })
     }
-  }, [status, isAuth, navigate])
+  }, [status])
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
