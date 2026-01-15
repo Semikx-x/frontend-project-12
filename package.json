@@ -16,7 +16,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run build --prefix frontend",
-    "start": "npm run build --prefix frontend && npm install && start-server -s ./frontend/dist",
+    "start": "npm install && start-server -s ./frontend/dist",
     "postinstall": "cd frontend && npm ci",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
