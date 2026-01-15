@@ -7,9 +7,11 @@ export const fetchJWS = createAsyncThunk(
    async function(values, { rejectWithValue }) {
     try {
       const response = await axios.post('/api/v1/login', { username: values.userName, password: values.password })
-      
+ 
       const token = JSON.stringify(response.data.token)
       localStorage.setItem('JWT', token);
+
+      console.log(localStorage.getItem('JWT'))
 
       return { 
         token: token,
