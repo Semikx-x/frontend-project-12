@@ -1,8 +1,8 @@
 const Chats = () => {
 
   return (
-    <div className="container-fluid vh-100">
-      <div className="row h-100">
+    <div className="container">
+      <div className="row">
         {/* Левая колонка */}
         <div className="col-3 border-end bg-light p-0">
           <div className="p-3 border-bottom">
