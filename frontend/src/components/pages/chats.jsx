@@ -1,14 +1,12 @@
 import { useEffect } from "react";
 import { fetchChannels, selectError, selectStatus,  selectChannels} from "../slices/ChannelsSlice.js";
 
-useEffect(() => {
-  const result = fetchChannels()
-  console.log(result)
-}, [])
-
-
-
 const Chats = () => {
+
+  useEffect(() => {
+    const result = fetchChannels()
+    console.log(result)
+  }, [])
 
   const styles = {
     wrapper: {
