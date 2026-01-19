@@ -6,12 +6,14 @@ import { selectToken } from "../slices/LoginSlice.js";
 const Chats = () => {
   
   const token = useSelector(selectToken)
-  const channels = useSelector(selectStatus)
   const dispatch = useDispatch()
 
   useEffect(async () => {
     await dispatch(fetchChannels(token))
   }, [])
+
+  const channels = useSelector(selectChannels)
+  console.log(channels)
 
   const styles = {
     wrapper: {
@@ -88,6 +90,13 @@ const Chats = () => {
       <aside style={styles.sidebar}>
         <div style={{ padding: '20px', fontSize: '1.2rem', borderBottom: '1px solid #3e4f5f' }}>
           Каналы
+        </div>
+        <div style={{ flex: 1, overflowY: 'auto' }}>
+          {channels.map(chan => (
+            <div key={chan.id} style={{ padding: '12px 20px', cursor: 'pointer' }}>
+              # {chan.name}
+            </div>
+          ))}
         </div>
       </aside>
 
