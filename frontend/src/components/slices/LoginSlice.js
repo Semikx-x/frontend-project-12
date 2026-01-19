@@ -8,10 +8,8 @@ export const fetchJWS = createAsyncThunk(
     try {
       const response = await axios.post('/api/v1/login', { username: values.userName, password: values.password })
  
-      const token = JSON.stringify(response.data.token)
+      const token = response.data.token
       localStorage.setItem('JWT', token);
-
-      console.log(localStorage.getItem('JWT'))
 
       return { 
         token: token,
@@ -42,7 +40,7 @@ const loginSlice = createSlice({
       const token = localStorage.getItem('JWT');
       if (token) {
         try {
-          state.token = JSON.parse(token);
+          state.token = token;
           state.auth = true;
         } catch (e) {
           state.token = null;
@@ -77,3 +75,4 @@ export default loginSlice.reducer
 export const selectStatus = (state) => state.login.status
 export const selectError = (state) => state.login.error
 export const selectAuth = (state) => state.login.auth
+export const selectToken = (state) => state.login.token

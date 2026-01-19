@@ -3,46 +3,50 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export const fetchChannels = createAsyncThunk(
   'channels/fetchChannels',
-   async function() {
+   async function(value, { rejectWithValue }) {
     try {
-      const token = localStorage.getItem('JWT')
+      console.log(value)
       const response = await axios.get('/api/v1/channels', {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${value}`,
       },
     })
 
-      console.log(response.data)
-
+      console.log('запрос пришел')
       return response.data
       
     } catch (error) {
-    if (error.response)
-      throw new  Error('Проебал')
+      if (error.response) {
+        return rejectWithValue('Ошибка затычка')
+      }
+      return rejectWithValue('Ошибка сети')
     }
   }
 )
 
 const channelsSlice = createSlice({
-  name: 'chanels',
+  name: 'channels',
   initialState: {
     status: null,
     error: null,
-    userName: '',
     channels: []
   },
   extraReducers: (builder) => {
       builder
-        .addCase(fetchJWS.pending, (state) => {
+        .addCase(fetchChannels.pending, (state) => {
+          console.log('start')
           state.status = 'loading';
           state.error = null;
         })
-        .addCase(fetchJWS.fulfilled, (state, action) => {
+        .addCase(fetchChannels.fulfilled, (state, action) => {
+          console.log('vin')
           state.status = 'succeeded';
-          state.channels = action.payload.data;
+          state.channels = action.payload;
           state.error = null;
+          console.log(state.channels)
         })
-        .addCase(fetchJWS.rejected, (state, action) => {
+        .addCase(fetchChannels.rejected, (state, action) => {
+          console.log('lose')
           state.status = 'failed';
           state.error = action.payload || 'Произошла ошибка';
         });

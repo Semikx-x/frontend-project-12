@@ -1,11 +1,16 @@
-import { useEffect } from "react";
+import { useEffect,} from "react";
+import { useSelector, useDispatch } from 'react-redux'
 import { fetchChannels, selectError, selectStatus,  selectChannels} from "../slices/ChannelsSlice.js";
+import { selectToken } from "../slices/LoginSlice.js";
 
 const Chats = () => {
+  
+  const token = useSelector(selectToken)
+  const channels = useSelector(selectStatus)
+  const dispatch = useDispatch()
 
-  useEffect(() => {
-    const result = fetchChannels()
-    console.log(result)
+  useEffect(async () => {
+    await dispatch(fetchChannels(token))
   }, [])
 
   const styles = {

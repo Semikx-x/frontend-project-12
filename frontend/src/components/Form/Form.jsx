@@ -8,7 +8,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 
 export const LoginForm = () => {
-  console.log('LoginForm компонент загружен')
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -17,10 +16,8 @@ export const LoginForm = () => {
   const isAuth = useSelector(selectAuth)
 
   useEffect(() => {
-    console.log('useEffect сработал, status:', status, 'isAuth:', isAuth)
     
     if (status === 'succeeded' && isAuth === true) {
-      console.log('Редирект на /main')
       navigate('/main', { replace: true })
     }
   }, [status])
