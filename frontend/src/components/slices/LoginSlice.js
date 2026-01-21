@@ -26,11 +26,11 @@ export const fetchJWS = createAsyncThunk(
   }
 )
 
-export const singup = createAsyncThunk(
-  'login/singup',
+export const signup = createAsyncThunk(
+  'login/signup',
    async function(values, { rejectWithValue }) {
     try {
-      const response = await axios.post('/api/v1/singup', { username: values.userName, password: values.password })
+      const response = await axios.post('/api/v1/signup', { username: values.userName, password: values.password })
  
       const token = response.data.token
       localStorage.setItem('JWT', token);
@@ -91,11 +91,11 @@ const loginSlice = createSlice({
         state.auth = false;
         state.error = action.payload || 'Произошла ошибка';
       })
-      .addCase(singup.pending, (state) => {
+      .addCase(signup.pending, (state) => {
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(singup.fulfilled, (state, action) => {
+      .addCase(signup.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.auth = true;
         state.token = action.payload.token;
@@ -103,7 +103,7 @@ const loginSlice = createSlice({
         state.userName = action.payload.userName
         console.log(action.payload)
       })
-      .addCase(singup.rejected, (state, action) => {
+      .addCase(signup.rejected, (state, action) => {
         state.status = 'failed';
         state.auth = false;
         state.error = action.payload || 'Произошла ошибка';

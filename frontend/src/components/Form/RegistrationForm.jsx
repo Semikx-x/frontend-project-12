@@ -3,7 +3,7 @@ import { initialValues } from './helper.js'
 import { Input } from '../input/Input.jsx'
 import { LogButton } from '../Buttons/Button.jsx'
 import { useEffect } from 'react'
-import { singup, selectStatus, selectError, selectAuth, selectToken } from '../slices/LoginSlice.js'
+import { signup, selectStatus, selectError, selectAuth, selectToken } from '../slices/LoginSlice.js'
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 
@@ -25,10 +25,10 @@ export const RegForm = () => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const result = await dispatch(singup(values))
+      const result = await dispatch(signup(values))
       
-      if (singup.fulfilled.match(result)) {
-      } else if (singup.rejected.match(result)) {
+      if (signup.fulfilled.match(result)) {
+      } else if (signup.rejected.match(result)) {
         setErrors({ general: result.payload })
       }
     } catch (err) {
