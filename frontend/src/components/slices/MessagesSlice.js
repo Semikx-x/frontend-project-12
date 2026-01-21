@@ -77,7 +77,6 @@ const messagesSlice = createSlice({
       })
       .addCase(addMessage.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.message = [...state.message, action.payload];
         state.error = null;
         console.log(state.message)
       })

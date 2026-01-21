@@ -17,11 +17,11 @@ const Chats = () => {
   const messages = useSelector(selectMessages)
 
   useEffect(() => {
-    const socket = io('http://localhost');
+    const socket = io();
 
     socket.on('newMessage', (payload) => {
       console.log('Новое сообщение через сокет:', payload);
-      dispatch(externalMessageReceived(payload)); 
+      dispatch(newMessage(payload)); 
     });
     return () => {
       socket.off('newMessage');
