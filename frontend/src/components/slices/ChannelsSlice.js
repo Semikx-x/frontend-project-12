@@ -27,29 +27,37 @@ const channelsSlice = createSlice({
   initialState: {
     status: null,
     error: null,
-    chats: []
+    chats: [],
+    activeChat: null
+  },
+  reducers: {
+    setActive: (state, action = 1) => {
+      state.activeChat = action.payload
+    }
   },
   extraReducers: (builder) => {
-      builder
-        .addCase(fetchChannels.pending, (state) => {
-          state.status = 'loading';
-          state.error = null;
-        })
-        .addCase(fetchChannels.fulfilled, (state, action) => {
-          state.status = 'succeeded';
-          state.chats = action.payload;
-          state.error = null;
-          console.log(state.chats)
-        })
-        .addCase(fetchChannels.rejected, (state, action) => {
-          state.status = 'failed';
-          state.error = action.payload || 'Произошла ошибка';
-        });
-    }
+    builder
+      .addCase(fetchChannels.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(fetchChannels.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.chats = action.payload;
+        state.error = null;
+      })
+      .addCase(fetchChannels.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Произошла ошибка';
+      });
+  }
 })
 
 export default channelsSlice.reducer
 
+export const { setActive } = channelsSlice.actions
+
 export const selectStatus = (state) => state.channels.status
 export const selectError = (state) => state.channels.error
 export const selectChannels = (state) => state.channels.chats
+export const selectActive = (state) => state.channels.activeChat

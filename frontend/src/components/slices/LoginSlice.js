@@ -26,6 +26,30 @@ export const fetchJWS = createAsyncThunk(
   }
 )
 
+export const singup = createAsyncThunk(
+  'login/singup',
+   async function(values, { rejectWithValue }) {
+    try {
+      const response = await axios.post('/api/v1/singup', { username: values.userName, password: values.password })
+ 
+      const token = response.data.token
+      localStorage.setItem('JWT', token);
+
+      return { 
+        token: token,
+        userName: values.userName 
+      }
+      
+    } catch (error) {
+      
+      if (error.response) {
+        return rejectWithValue('Неверные ник или пароль')
+      }
+      return rejectWithValue('Ошибка сети')
+    }
+  }
+)
+
 const loginSlice = createSlice({
   name: 'login',
   initialState: {
@@ -60,8 +84,25 @@ const loginSlice = createSlice({
         state.auth = true;
         state.token = action.payload.token;
         state.error = null;
+        state.userName = action.payload.userName
       })
       .addCase(fetchJWS.rejected, (state, action) => {
+        state.status = 'failed';
+        state.auth = false;
+        state.error = action.payload || 'Произошла ошибка';
+      })
+      .addCase(singup.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(singup.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.auth = true;
+        state.token = action.payload.token;
+        state.error = null;
+        state.userName = action.payload.userName
+      })
+      .addCase(singup.rejected, (state, action) => {
         state.status = 'failed';
         state.auth = false;
         state.error = action.payload || 'Произошла ошибка';
@@ -76,3 +117,4 @@ export const selectStatus = (state) => state.login.status
 export const selectError = (state) => state.login.error
 export const selectAuth = (state) => state.login.auth
 export const selectToken = (state) => state.login.token
+export const selectUser = (state) => state.login.userName

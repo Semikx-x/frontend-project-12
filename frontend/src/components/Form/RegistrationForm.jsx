@@ -3,11 +3,11 @@ import { initialValues } from './helper.js'
 import { Input } from '../input/Input.jsx'
 import { LogButton } from '../Buttons/Button.jsx'
 import { useEffect } from 'react'
-import { fetchJWS, selectStatus, selectError, selectAuth, selectToken } from '../slices/LoginSlice.js'
+import { singup, selectStatus, selectError, selectAuth, selectToken } from '../slices/LoginSlice.js'
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 
-export const LoginForm = () => {
+export const RegForm = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -25,10 +25,10 @@ export const LoginForm = () => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const result = await dispatch(fetchJWS(values))
+      const result = await dispatch(singup(values))
       
-      if (fetchJWS.fulfilled.match(result)) {
-      } else if (fetchJWS.rejected.match(result)) {
+      if (singup.fulfilled.match(result)) {
+      } else if (singup.rejected.match(result)) {
         setErrors({ general: result.payload })
       }
     } catch (err) {
@@ -45,7 +45,7 @@ export const LoginForm = () => {
     >
       {({ isSubmitting, errors, touched }) => (
         <Form className="col-12 col-md-6 mt-3 mt-md-0">
-          <h1 className="text-center mb-4">Войти</h1>
+          <h1 className="text-center mb-4">Регистрация</h1>
           <Input
             label="Ваш ник"
             name="userName"
@@ -63,7 +63,7 @@ export const LoginForm = () => {
               {errors.general}
             </div>
           )}
-          <LogButton>{isSubmitting ? 'Вход...' : 'Войти'}</LogButton>
+          <LogButton>{isSubmitting ? 'Регистрация' : 'Зарегистрироваться'}</LogButton>
         </Form>
       )}
     </Formik>

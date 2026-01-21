@@ -1,19 +1,50 @@
 import { useEffect,} from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchChannels, selectError, selectStatus,  selectChannels} from "../slices/ChannelsSlice.js";
-import { selectToken } from "../slices/LoginSlice.js";
+import { fetchChannels, selectChannels, setActive, selectActive } from "../slices/ChannelsSlice.js";
+import { selectToken, selectUser } from "../slices/LoginSlice.js";
+import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSlice.js'
+import { MessageInput } from "../input/MessageInput.jsx";
+import { ChatList } from "../ChatComponent/ChatList.jsx";
+import { io } from 'socket.io-client';
+
 
 const Chats = () => {
   
   const token = useSelector(selectToken)
+  const activeChat = useSelector(selectActive)
+  const user = useSelector(selectUser)
   const dispatch = useDispatch()
+  const messages = useSelector(selectMessages)
 
-  useEffect(async () => {
-    await dispatch(fetchChannels(token))
-  }, [])
+  useEffect(() => {
+    const socket = io('http://localhost');
 
-  const channels = useSelector(selectChannels)
-  console.log(channels)
+    socket.on('newMessage', (payload) => {
+      console.log('Новое сообщение через сокет:', payload);
+      dispatch(externalMessageReceived(payload)); 
+    });
+    return () => {
+      socket.off('newMessage');
+      socket.disconnect();
+    };
+  }, [dispatch])
+
+  useEffect(() => {
+  const loadData = async () => {
+    const result = await dispatch(fetchChannels(token)).unwrap();
+      if (result && result.length > 0) {
+        dispatch(setActive(result[0].id));
+      }
+    };
+    loadData();
+  }, [dispatch, token])
+
+  useEffect(() => {
+    dispatch(fetchMessages(token))
+  }, [activeChat])
+
+
+  //console.log(messages)
 
   const styles = {
     wrapper: {
@@ -54,35 +85,6 @@ const Chats = () => {
       flexDirection: 'column',
       gap: '10px'
     },
-    inputWrapper: {
-      padding: '20px',
-      backgroundColor: 'white',
-      borderTop: '1px solid #ddd'
-    },
-    form: {
-      display: 'flex',
-      gap: '10px',
-      maxWidth: '1000px',
-      margin: '0 auto',
-      width: '100%'
-    },
-    input: {
-      flex: 1,
-      padding: '12px 15px',
-      borderRadius: '8px',
-      border: '1px solid #ccc',
-      outline: 'none',
-      fontSize: '16px'
-    },
-    button: {
-      padding: '10px 25px',
-      backgroundColor: '#007bff',
-      color: 'white',
-      border: 'none',
-      borderRadius: '8px',
-      cursor: 'pointer',
-      fontWeight: '600'
-    }
   };
 
   return (
@@ -92,11 +94,7 @@ const Chats = () => {
           Каналы
         </div>
         <div style={{ flex: 1, overflowY: 'auto' }}>
-          {channels.map(chan => (
-            <div key={chan.id} style={{ padding: '12px 20px', cursor: 'pointer' }}>
-              # {chan.name}
-            </div>
-          ))}
+          <ChatList/>
         </div>
       </aside>
 
@@ -106,19 +104,16 @@ const Chats = () => {
         </header>
 
         <div style={styles.messagesList}>
+          {messages
+            .filter((message) => message.channelId === activeChat)
+            .map((message) => (
+          <div key={message.id} style={{ background: 'white', padding: '10px', borderRadius: '8px', width: 'fit-content' }}>
+            {message.body}
+            </div>
+            ))
+          }
         </div>
-
-        <footer style={styles.inputWrapper}>
-          <form style={styles.form} onSubmit={(e) => e.preventDefault()}>
-            <input 
-              style={styles.input} 
-              type="text" 
-              placeholder="Написать в #general..." 
-              value=''
-            />
-            <button style={styles.button} type="submit">Отправить</button>
-          </form>
-        </footer>
+        <MessageInput/>
       </main>
     </div>
   )
