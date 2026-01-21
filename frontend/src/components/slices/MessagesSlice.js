@@ -15,7 +15,7 @@ export const fetchMessages = createAsyncThunk(
       
     } catch (error) {
       if (error.response) {
-        return rejectWithValue('Ошибка затычка')
+        return rejectWithValue('не нашел токена')
       }
       return rejectWithValue('Ошибка сети')
     }

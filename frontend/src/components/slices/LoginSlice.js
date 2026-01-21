@@ -101,6 +101,7 @@ const loginSlice = createSlice({
         state.token = action.payload.token;
         state.error = null;
         state.userName = action.payload.userName
+        console.log(action.payload)
       })
       .addCase(singup.rejected, (state, action) => {
         state.status = 'failed';

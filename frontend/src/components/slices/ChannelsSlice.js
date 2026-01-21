@@ -15,7 +15,7 @@ export const fetchChannels = createAsyncThunk(
       
     } catch (error) {
       if (error.response) {
-        return rejectWithValue('Ошибка затычка')
+        return rejectWithValue('нет токена для каналов')
       }
       return rejectWithValue('Ошибка сети')
     }
