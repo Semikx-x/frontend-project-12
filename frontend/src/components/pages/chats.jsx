@@ -32,9 +32,7 @@ const Chats = () => {
   useEffect(() => {
   const loadData = async () => {
     const result = await dispatch(fetchChannels(token)).unwrap();
-      if (result && result.length > 0) {
-        dispatch(setActive(result[0].id));
-      }
+    dispatch(setActive(result[0]));
     };
     loadData();
   }, [dispatch, token])

@@ -3,11 +3,53 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export const fetchChannels = createAsyncThunk(
   'channels/fetchChannels',
-   async function(value, { rejectWithValue }) {
+   async function(token, { rejectWithValue }) {
     try {
       const response = await axios.get('/api/v1/channels', {
       headers: {
-        Authorization: `Bearer ${value}`,
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      return response.data
+      
+    } catch (error) {
+      if (error.response) {
+        return rejectWithValue('нет токена для каналов')
+      }
+      return rejectWithValue('Ошибка сети')
+    }
+  }
+)
+
+export const deleteChannel = createAsyncThunk(
+  'channels/deleteChannel',
+   async function(token, chatID, { rejectWithValue }) {
+    try {
+      const response = await axios.delete(`/api/v1/channels/${chatID}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+      return response.data
+      
+    } catch (error) {
+      if (error.response) {
+        return rejectWithValue('нет токена для каналов')
+      }
+      return rejectWithValue('Ошибка сети')
+    }
+  }
+)
+
+export const editChannel = createAsyncThunk(
+  'channels/editChannel',
+   async function(token, chatID, newName, { rejectWithValue }) {
+    try {
+      const response = await axios.patch(`/api/v1/channels/${chatID}`, newName, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
     })
 
@@ -31,7 +73,7 @@ const channelsSlice = createSlice({
     activeChat: null
   },
   reducers: {
-    setActive: (state, action = 1) => {
+    setActive: (state, action) => {
       state.activeChat = action.payload
     }
   },
@@ -47,6 +89,35 @@ const channelsSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchChannels.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Произошла ошибка';
+      })
+      .addCase(deleteChannel.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(deleteChannel.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.chats = state.chats.filter(chat => chat.id !== action.payload.id)
+        state.error = null;
+      })
+      .addCase(deleteChannel.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Произошла ошибка';
+      })
+      .addCase(editChannel.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(editChannel.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const index = state.chats.findIndex(chat => chat.id === action.payload.id);
+          if (index !== -1) {
+            state.chats[index] = action.payload;
+          }
+        state.error = null;
+      })
+      .addCase(editChannel.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload || 'Произошла ошибка';
       });

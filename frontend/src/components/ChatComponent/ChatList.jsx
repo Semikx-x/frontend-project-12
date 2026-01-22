@@ -10,7 +10,16 @@ export const ChatList = () => {
   return (
     channels.map(chan => (
       <div key={chan.id}  onClick={() => dispatch(setActive(chan.id))} style={{ padding: '12px 20px', cursor: 'pointer' }}>
-        # {chan.name}
+        <span># {chan.name}</span>
+        {chan.removable && (
+          <Button 
+            variant="outline-light" 
+            size="sm" 
+            onClick={() => dispatch(openModal({ type: 'editing', extraData: chan }))}
+          >
+            ⚙️
+          </Button>
+    )}
       </div>
     ))
   )
