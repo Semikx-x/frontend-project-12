@@ -24,8 +24,9 @@ export const fetchChannels = createAsyncThunk(
 
 export const deleteChannel = createAsyncThunk(
   'channels/deleteChannel',
-   async function(token, chatID, { rejectWithValue }) {
+   async function(chatID, { rejectWithValue }) {
     try {
+      const token = localStorage.getItem('JWT')
       const response = await axios.delete(`/api/v1/channels/${chatID}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -43,16 +44,39 @@ export const deleteChannel = createAsyncThunk(
   }
 )
 
-export const editChannel = createAsyncThunk(
-  'channels/editChannel',
-   async function(token, chatID, newName, { rejectWithValue }) {
+export const renameChannel = createAsyncThunk(
+  'channels/renameChannel',
+   async function({ id, name }, { rejectWithValue }) {
     try {
-      const response = await axios.patch(`/api/v1/channels/${chatID}`, newName, {
+      const token = localStorage.getItem('JWT')
+      console.log({ id })
+      const response = await axios.patch(`/api/v1/channels/${id}`, { name }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
+      console.log('канал изменен')
+      return response.data
+      
+    } catch (error) {
+      if (error.response) {
+        return rejectWithValue('нет токена для каналов')
+      }
+      return rejectWithValue('Ошибка сети')
+    }
+  }
+)
 
+export const addChannel = createAsyncThunk(
+  'channels/addChannel',
+   async function(name, { rejectWithValue }) {
+    try {
+      const token = localStorage.getItem('JWT')
+      const response = await axios.post('/api/v1/channels', name, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       return response.data
       
     } catch (error) {
@@ -105,19 +129,33 @@ const channelsSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload || 'Произошла ошибка';
       })
-      .addCase(editChannel.pending, (state) => {
+      .addCase(renameChannel.pending, (state) => {
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(editChannel.fulfilled, (state, action) => {
+      .addCase(renameChannel.fulfilled, (state, action) => {
         state.status = 'succeeded';
         const index = state.chats.findIndex(chat => chat.id === action.payload.id);
           if (index !== -1) {
             state.chats[index] = action.payload;
           }
+        console.log(state.chats)
         state.error = null;
       })
-      .addCase(editChannel.rejected, (state, action) => {
+      .addCase(renameChannel.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Произошла ошибка';
+      })
+      .addCase(addChannel.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(addChannel.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.chats = [...state.chats, action.payload]
+        state.error = null;
+      })
+      .addCase(addChannel.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload || 'Произошла ошибка';
       });

@@ -6,6 +6,9 @@ import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSli
 import { MessageInput } from "../input/MessageInput.jsx";
 import { ChatList } from "../ChatComponent/ChatList.jsx";
 import { io } from 'socket.io-client';
+import { openModal } from "../slices/ModalSlice.js";
+import NewChannelModal from "../Modals/NewChannelModal.jsx"
+import EditChannelModal from "../Modals/ModalEditChannel.jsx";
 
 
 const Chats = () => {
@@ -92,7 +95,12 @@ const Chats = () => {
           Каналы
         </div>
         <div style={{ flex: 1, overflowY: 'auto' }}>
+          <button variant="outline-light" size="sm" onClick={() => dispatch(openModal({ type: 'adding', extraData: null}))}>
+            СОздать канал
+          </button>
+          <NewChannelModal/>
           <ChatList/>
+          <EditChannelModal/>
         </div>
       </aside>
 

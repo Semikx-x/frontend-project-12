@@ -2,24 +2,18 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import { closeModal, selectExtraData, selectOpen, selectType } from '../slices/ModalSlice.js';
-import { renameChannel, deleteChannel } from '../slices/ChannelsSlice.js';
+import { addChannel } from '../slices/ChannelsSlice.js';
 
-const EditChannelModal = () => {
+const NewChannelModal = () => {
   const dispatch = useDispatch();
   const isOpen = useSelector(selectOpen)
   const type = useSelector(selectType)
   const extraData = useSelector(selectExtraData)
 
-  if (!isOpen || type !== 'editing') return null;
+  if (!isOpen || type !== 'adding') return null;
 
   const handleClose = () => dispatch(closeModal());
 
-  const handleDelete = async () => {
-    if (window.confirm(`Вы уверены, что хотите удалить канал "${extraData.name}"?`)) {
-      await dispatch(deleteChannel(extraData.id));
-      handleClose();
-    }
-  };
 
   return (
     <Modal show={isOpen} onHide={handleClose} centered>
@@ -30,7 +24,8 @@ const EditChannelModal = () => {
       <Formik
         initialValues={{ name: extraData?.name || '' }}
         onSubmit={async (values) => {
-          await dispatch(renameChannel({ id: extraData.id, name: values.name }));
+          await dispatch(addChannel(values))
+          console.log(values);
           handleClose();
         }}
       >
@@ -49,10 +44,6 @@ const EditChannelModal = () => {
             </Modal.Body>
 
             <Modal.Footer className="d-flex justify-content-between">
-              <Button variant="danger" onClick={handleDelete} disabled={isSubmitting}>
-                Удалить
-              </Button>
-
               <div>
                 <Button variant="secondary" onClick={handleClose} className="me-2">
                   Отмена
@@ -69,4 +60,4 @@ const EditChannelModal = () => {
   );
 };
 
-export default EditChannelModal;
+export default NewChannelModal;
