@@ -1,7 +1,7 @@
 import { useEffect,} from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchChannels, selectChannels, setActive, selectActive } from "../slices/ChannelsSlice.js";
-import { selectToken, selectUser } from "../slices/LoginSlice.js";
+import { fetchChannels, setActive, selectActive } from "../slices/ChannelsSlice.js";
+import { selectToken } from "../slices/LoginSlice.js";
 import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSlice.js'
 import { MessageInput } from "../input/MessageInput.jsx";
 import { ChatList } from "../ChatComponent/ChatList.jsx";
@@ -15,7 +15,6 @@ const Chats = () => {
   
   const token = useSelector(selectToken)
   const activeChat = useSelector(selectActive)
-  const user = useSelector(selectUser)
   const dispatch = useDispatch()
   const messages = useSelector(selectMessages)
 
@@ -97,8 +96,8 @@ const Chats = () => {
           Каналы
         </div>
         <div style={{ flex: 1, overflowY: 'auto' }}>
-          <button variant="outline-light" size="sm" onClick={() => dispatch(openModal({ type: 'adding', extraData: null}))}>
-            СОздать канал
+          <button size="sm" onClick={() => dispatch(openModal({ type: 'adding', extraData: null}))}>
+            Создать канал
           </button>
           <ChatList/>
         </div>
