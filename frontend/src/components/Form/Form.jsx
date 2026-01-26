@@ -45,7 +45,7 @@ export const LoginForm = () => {
     >
       {({ isSubmitting, errors, touched }) => (
         <Form className="col-12 col-md-6 mt-3 mt-md-0">
-          <h1 className="text-center mb-4">Войти</h1>
+          <h2 className="text-center mb-4">Войти</h2>
           <Input
             label="Ваш ник"
             name="userName"

@@ -4,10 +4,10 @@ const Login = () => {
   return (
     <div className="container-fluid vh-100 d-flex justify-content-center align-items-center">
       <div className="row">
-        <div className="col-12 col-md-8 col-xxl-6">
+        <div className="col-12">
           <div className="card shadow-sm">
             <div className="card-body row p-5">
-              <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+              <div className="col-12">
                 <LoginForm/>
               </div>
             </div>
