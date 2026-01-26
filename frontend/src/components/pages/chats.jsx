@@ -90,6 +90,8 @@ const Chats = () => {
 
   return (
     <div style={styles.wrapper}>
+      <NewChannelModal/>
+      <EditChannelModal/>
       <aside style={styles.sidebar}>
         <div style={{ padding: '20px', fontSize: '1.2rem', borderBottom: '1px solid #3e4f5f' }}>
           Каналы
@@ -98,9 +100,7 @@ const Chats = () => {
           <button variant="outline-light" size="sm" onClick={() => dispatch(openModal({ type: 'adding', extraData: null}))}>
             СОздать канал
           </button>
-          <NewChannelModal/>
           <ChatList/>
-          <EditChannelModal/>
         </div>
       </aside>
 
