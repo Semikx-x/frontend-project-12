@@ -1,10 +1,9 @@
-import { useEffect,} from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchChannels, setActive, selectActive } from "../slices/ChannelsSlice.js";
 import { selectToken } from "../slices/LoginSlice.js";
 import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSlice.js'
 import { MessageInput } from "../input/MessageInput.jsx";
-import { ChatList } from "../ChatComponent/ChatList.jsx";
+import { ChatList, newChat } from "../ChatComponent/ChatList.jsx";
 import { io } from 'socket.io-client';
 import { openModal } from "../slices/ModalSlice.js";
 import NewChannelModal from "../Modals/NewChannelModal.jsx"
@@ -23,7 +22,8 @@ const Chats = () => {
 
     socket.on('newMessage', (payload) => {
       console.log('Новое сообщение через сокет:', payload);
-      dispatch(newMessage(payload)); 
+      dispatch(newMessage(payload));
+      dispatch(newChat(payload)) 
     });
     return () => {
       socket.off('newMessage');

@@ -99,6 +99,9 @@ const channelsSlice = createSlice({
   reducers: {
     setActive: (state, action) => {
       state.activeChat = action.payload
+    },
+    newChat: (state, action) => {
+      state.channels.push(action.payload)
     }
   },
   extraReducers: (builder) => {
@@ -164,7 +167,7 @@ const channelsSlice = createSlice({
 
 export default channelsSlice.reducer
 
-export const { setActive } = channelsSlice.actions
+export const { setActive, newChat } = channelsSlice.actions
 
 export const selectStatus = (state) => state.channels.status
 export const selectError = (state) => state.channels.error
