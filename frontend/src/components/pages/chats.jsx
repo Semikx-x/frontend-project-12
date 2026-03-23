@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchChannels, setActive, selectActive } from "../slices/ChannelsSlice.js";
+import { useEffect } from 'react'
+import { fetchChannels, setActive, selectActive, newChannel, removeChannel  } from "../slices/ChannelsSlice.js";
 import { selectToken } from "../slices/LoginSlice.js";
 import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSlice.js'
 import { MessageInput } from "../input/MessageInput.jsx";
-import { ChatList, newChat } from "../ChatComponent/ChatList.jsx";
+import { ChatList} from "../ChatComponent/ChatList.jsx";
 import { io } from 'socket.io-client';
 import { openModal } from "../slices/ModalSlice.js";
 import NewChannelModal from "../Modals/NewChannelModal.jsx"
@@ -22,11 +23,20 @@ const Chats = () => {
 
     socket.on('newMessage', (payload) => {
       console.log('Новое сообщение через сокет:', payload);
-      dispatch(newMessage(payload));
-      dispatch(newChat(payload)) 
+      dispatch(newMessage(payload)); 
+    });
+    socket.on('newChannel', (payload) => {
+    console.log('Создан новый канал:', payload);
+    dispatch(newChannel(payload));
+    });
+    socket.on('removeChannel', (payload) => {
+    console.log('Канал удален, ID:', payload.id);
+    dispatch(removeChannel(payload.id));
     });
     return () => {
       socket.off('newMessage');
+      socket.off('newChannel')
+      socket.off('removeChannel')
       socket.disconnect();
     };
   }, [dispatch])

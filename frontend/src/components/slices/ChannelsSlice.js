@@ -100,8 +100,15 @@ const channelsSlice = createSlice({
     setActive: (state, action) => {
       state.activeChat = action.payload
     },
-    newChat: (state, action) => {
-      state.channels.push(action.payload)
+    newChannel: (state, action) => {
+      state.chats.unshift(action.payload);
+    },
+    removeChannel: (state, action) => {
+      state.chats = state.chats.filter(chat => chat.id !== action.payload);
+
+      if (state.activeChat === action.payload) {
+        state.activeChat = null;
+      }
     }
   },
   extraReducers: (builder) => {
@@ -155,7 +162,6 @@ const channelsSlice = createSlice({
       })
       .addCase(addChannel.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.chats = [...state.chats, action.payload]
         state.error = null;
       })
       .addCase(addChannel.rejected, (state, action) => {
@@ -167,7 +173,7 @@ const channelsSlice = createSlice({
 
 export default channelsSlice.reducer
 
-export const { setActive, newChat } = channelsSlice.actions
+export const { setActive, newChannel, removeChannel } = channelsSlice.actions
 
 export const selectStatus = (state) => state.channels.status
 export const selectError = (state) => state.channels.error
