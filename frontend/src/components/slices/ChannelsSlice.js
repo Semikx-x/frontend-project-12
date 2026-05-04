@@ -3,7 +3,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export const fetchChannels = createAsyncThunk(
   'channels/fetchChannels',
-   async function(token, { rejectWithValue }) {
+   async function(token1, { rejectWithValue }) {
+    const token = localStorage.getItem('JWT')
     try {
       const response = await axios.get('/api/v1/channels', {
       headers: {

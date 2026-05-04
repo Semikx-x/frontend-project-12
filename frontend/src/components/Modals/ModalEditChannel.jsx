@@ -3,19 +3,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import { closeModal, selectExtraData, selectOpen, selectType } from '../slices/ModalSlice.js';
 import { renameChannel, deleteChannel } from '../slices/ChannelsSlice.js';
+import { useTranslation } from 'react-i18next'
 
 const EditChannelModal = () => {
   const dispatch = useDispatch();
   const isOpen = useSelector(selectOpen)
   const type = useSelector(selectType)
   const extraData = useSelector(selectExtraData)
+  const { t, i18n } = useTranslation()
 
   if (!isOpen || type !== 'editing') return null;
 
   const handleClose = () => dispatch(closeModal());
 
   const handleDelete = async () => {
-    if (window.confirm(`Вы уверены, что хотите удалить канал "${extraData.name}"?`)) {
+    if (window.confirm(`${t('modal.youSure')} "${extraData.name}"?`)) {
       await dispatch(deleteChannel(extraData.id));
       handleClose();
     }
@@ -24,7 +26,7 @@ const EditChannelModal = () => {
   return (
     <Modal show={isOpen} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Настройки канала</Modal.Title>
+        <Modal.Title>{t('modal.editChanel')}</Modal.Title>
       </Modal.Header>
 
       <Formik
@@ -38,7 +40,7 @@ const EditChannelModal = () => {
           <Form onSubmit={handleSubmit}>
             <Modal.Body>
               <Form.Group>
-                <Form.Label>Название канала</Form.Label>
+                <Form.Label>{t('modal.nameChanel')}</Form.Label>
                 <Form.Control
                   name="name"
                   value={values.name}
@@ -50,15 +52,15 @@ const EditChannelModal = () => {
 
             <Modal.Footer className="d-flex justify-content-between">
               <Button variant="danger" onClick={handleDelete} disabled={isSubmitting}>
-                Удалить
+                {t('modal.delete')}
               </Button>
 
               <div>
                 <Button variant="secondary" onClick={handleClose} className="me-2">
-                  Отмена
+                  {t('modal.abort')}
                 </Button>
                 <Button variant="primary" type="submit" disabled={isSubmitting}>
-                  Сохранить
+                  {t('modal.save')}
                 </Button>
               </div>
             </Modal.Footer>

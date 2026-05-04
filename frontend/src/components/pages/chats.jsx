@@ -9,6 +9,7 @@ import { io } from 'socket.io-client';
 import { openModal } from "../slices/ModalSlice.js";
 import NewChannelModal from "../Modals/NewChannelModal.jsx"
 import EditChannelModal from "../Modals/ModalEditChannel.jsx";
+import { useTranslation } from 'react-i18next'
 
 
 const Chats = () => {
@@ -17,6 +18,7 @@ const Chats = () => {
   const activeChat = useSelector(selectActive)
   const dispatch = useDispatch()
   const messages = useSelector(selectMessages)
+  const { t, i18n } = useTranslation()
 
   useEffect(() => {
     const socket = io();
@@ -51,10 +53,10 @@ const Chats = () => {
 
   useEffect(() => {
     dispatch(fetchMessages(token))
-  }, [activeChat])
+  }, [activeChat, dispatch, token])
 
 
-  //console.log(messages)
+  //console.log(activeChat)
 
   const styles = {
     wrapper: {
@@ -103,11 +105,11 @@ const Chats = () => {
       <EditChannelModal/>
       <aside style={styles.sidebar}>
         <div style={{ padding: '20px', fontSize: '1.2rem', borderBottom: '1px solid #3e4f5f' }}>
-          Каналы
+          {t('chats.channels')}
         </div>
         <div style={{ flex: 1, overflowY: 'auto' }}>
           <button size="sm" onClick={() => dispatch(openModal({ type: 'adding', extraData: null}))}>
-            Создать канал
+            {t('chats.create')}
           </button>
           <ChatList/>
         </div>
@@ -115,12 +117,12 @@ const Chats = () => {
 
       <main style={styles.chatContainer}>
         <header style={styles.header}>
-          # general
+          {activeChat?.name ?? ""}
         </header>
 
         <div style={styles.messagesList}>
           {messages
-            .filter((message) => message.channelId === activeChat)
+            .filter((message) => message.channelId === activeChat.id)
             .map((message) => (
           <div key={message.id} style={{ background: 'white', padding: '10px', borderRadius: '8px', width: 'fit-content' }}>
             {message.body}

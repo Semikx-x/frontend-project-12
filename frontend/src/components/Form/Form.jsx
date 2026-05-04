@@ -6,10 +6,12 @@ import { useEffect } from 'react'
 import { fetchJWS, selectStatus, selectError, selectAuth, selectToken } from '../slices/LoginSlice.js'
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 export const LoginForm = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { t, i18n } = useTranslation();
 
   const status = useSelector(selectStatus)
   const error = useSelector(selectError)
@@ -45,25 +47,23 @@ export const LoginForm = () => {
     >
       {({ isSubmitting, errors, touched }) => (
         <Form className="col-12 col-md-6 mt-3 mt-md-0">
-          <h2 className="text-center mb-4">Войти</h2>
+          <h2 className="text-center mb-4">{t('login.log-in')}</h2>
           <Input
-            label="Ваш ник"
             name="userName"
             id="userName"
-            placeholder="Ваш ник"
+            placeholder={t('login.placeholderL')}
           />
           <Input
-            label="Пароль"
             name="password"
             id="password"
-            placeholder="Пароль"
+            placeholder={t('login.placeholderP')}
           />
           {errors.general && (
             <div className="alert alert-danger mt-3" role="alert">
               {errors.general}
             </div>
           )}
-          <LogButton>{isSubmitting ? 'Вход...' : 'Войти'}</LogButton>
+          <LogButton>{isSubmitting ? t('login.ing') : t('login.butLog')}</LogButton>
         </Form>
       )}
     </Formik>

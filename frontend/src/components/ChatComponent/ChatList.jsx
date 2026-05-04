@@ -10,7 +10,7 @@ export const ChatList = () => {
 
   return (
     channels.map(chan => (
-      <div key={chan.id}  onClick={() => dispatch(setActive(chan.id))} style={{ padding: '12px 20px', cursor: 'pointer' }}>
+      <div key={chan.id}  onClick={() => dispatch(setActive(chan))} style={{ padding: '12px 20px', cursor: 'pointer' }}>
         <span># {chan.name}</span>
         {chan.removable && (
           <button 

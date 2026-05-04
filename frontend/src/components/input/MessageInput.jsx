@@ -45,7 +45,7 @@ export const MessageInput = () => {
     <Formik
       initialValues={{ body: '' }}
       onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
-        const message = { body: values.body, channelId: activeChat, userName: user };
+        const message = { body: values.body, channelId: activeChat.id, userName: user };
         const result = await dispatch(addMessage(message));
         
         if (addMessage.fulfilled.match(result)) {
