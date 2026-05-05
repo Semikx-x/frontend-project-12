@@ -7,6 +7,7 @@ import { signup, selectStatus, selectError, selectAuth, selectToken } from '../s
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { getRegistrationSchema } from '../Form/schema.js'
 
 export const RegForm = () => {
   const dispatch = useDispatch()
@@ -27,13 +28,13 @@ export const RegForm = () => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const result = await dispatch(signup(values))
+      const result = await dispatch(signup(values)).unwrap()
       
-      if (signup.fulfilled.match(result)) {
-      } else if (signup.rejected.match(result)) {
+      if (signup.rejected.match(result)) {
         setErrors({ general: result.payload })
       }
     } catch (err) {
+      console.log(err)
       setErrors({ general: 'Произошла ошибка' })
     } finally {
       setSubmitting(false)
@@ -43,6 +44,7 @@ export const RegForm = () => {
   return (
     <Formik 
       initialValues={initialValues}
+      validationSchema={getRegistrationSchema()}
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, errors, touched }) => (
@@ -53,17 +55,37 @@ export const RegForm = () => {
             id="userName"
             placeholder={t('registr.placeholderL')}
           />
+          {/* {errors.userName && touched.userName && (
+            <div className="alert alert-danger mt-3" role="alert">
+              {errors.userName}
+            </div>
+          )} */}
           <Input
             name="password"
             id="password"
             placeholder={t('registr.placeholderP')}
           />
-          {errors.general && (
+          {/* {errors.password && touched.password && (
+            <div className="alert alert-danger mt-3" role="alert">
+              {errors.password}
+            </div>
+          )} */}
+          <Input
+            name="acceptPassword"
+            id="acceptPassword"
+            placeholder={t('registr.placeholderPP')}
+          />
+          {/* {errors.acceptPassword && touched.acceptPassword && (
+            <div className="alert alert-danger mt-3" role="alert">
+              {errors.acceptPassword}
+            </div>
+          )} */}
+          <LogButton>{isSubmitting ? t('registr.reg') : t('registr.butReg')}</LogButton>
+          {errors.general && touched.general && (
             <div className="alert alert-danger mt-3" role="alert">
               {errors.general}
             </div>
           )}
-          <LogButton>{isSubmitting ? t('registr.reg') : t('registr.butReg')}</LogButton>
         </Form>
       )}
     </Formik>

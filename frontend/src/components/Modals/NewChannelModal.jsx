@@ -2,8 +2,9 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import { closeModal, selectExtraData, selectOpen, selectType } from '../slices/ModalSlice.js';
-import { addChannel } from '../slices/ChannelsSlice.js';
+import { addChannel, selectChannels } from '../slices/ChannelsSlice.js';
 import { useTranslation } from 'react-i18next'
+import { getChannelSchema } from '../Form/schema.js';
 
 const NewChannelModal = () => {
   const dispatch = useDispatch();
@@ -11,6 +12,7 @@ const NewChannelModal = () => {
   const type = useSelector(selectType)
   const extraData = useSelector(selectExtraData)
   const { t, i18n } = useTranslation()
+  const channels = useSelector(selectChannels)
 
   if (!isOpen || type !== 'adding') return null;
 
@@ -25,13 +27,14 @@ const NewChannelModal = () => {
 
       <Formik
         initialValues={{ name: extraData?.name || '' }}
+        validationSchema={getChannelSchema(channels)}
         onSubmit={async (values) => {
           await dispatch(addChannel(values))
           console.log(values);
           handleClose();
         }}
       >
-        {({ handleSubmit, handleChange, values, isSubmitting }) => (
+        {({ handleSubmit, handleChange, errors, values, isSubmitting }) => (
           <Form onSubmit={handleSubmit}>
             <Modal.Body>
               <Form.Group>
@@ -42,6 +45,11 @@ const NewChannelModal = () => {
                   onChange={handleChange}
                   autoFocus
                 />
+                {errors.name && (
+                  <div className="alert alert-danger mt-3" role="alert">
+                    {errors.name}
+                  </div>
+                )}
               </Form.Group>
             </Modal.Body>
 

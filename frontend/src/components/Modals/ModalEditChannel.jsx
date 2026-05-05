@@ -2,8 +2,9 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import { closeModal, selectExtraData, selectOpen, selectType } from '../slices/ModalSlice.js';
-import { renameChannel, deleteChannel } from '../slices/ChannelsSlice.js';
+import { renameChannel, deleteChannel, selectChannels } from '../slices/ChannelsSlice.js';
 import { useTranslation } from 'react-i18next'
+import { getChannelSchema } from '../Form/schema.js';
 
 const EditChannelModal = () => {
   const dispatch = useDispatch();
@@ -11,6 +12,7 @@ const EditChannelModal = () => {
   const type = useSelector(selectType)
   const extraData = useSelector(selectExtraData)
   const { t, i18n } = useTranslation()
+  const channels = useSelector(selectChannels)
 
   if (!isOpen || type !== 'editing') return null;
 
@@ -31,12 +33,13 @@ const EditChannelModal = () => {
 
       <Formik
         initialValues={{ name: extraData?.name || '' }}
+        validationSchema={getChannelSchema(channels)}
         onSubmit={async (values) => {
           await dispatch(renameChannel({ id: extraData.id, name: values.name }));
           handleClose();
         }}
       >
-        {({ handleSubmit, handleChange, values, isSubmitting }) => (
+        {({ handleSubmit, handleChange,errors, values, isSubmitting }) => (
           <Form onSubmit={handleSubmit}>
             <Modal.Body>
               <Form.Group>
@@ -47,6 +50,11 @@ const EditChannelModal = () => {
                   onChange={handleChange}
                   autoFocus
                 />
+                {errors.name && (
+                  <div className="alert alert-danger mt-3" role="alert">
+                    {errors.name}
+                  </div>
+                )}
               </Form.Group>
             </Modal.Body>
 
