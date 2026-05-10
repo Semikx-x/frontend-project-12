@@ -1,40 +1,48 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
-import { fetchChannels, setActive, selectActive, newChannel, removeChannel  } from "../slices/ChannelsSlice.js";
-import { selectToken } from "../slices/LoginSlice.js";
+import { fetchChannels, setActive, selectActive, newChannel, removeChannel } from "../slices/ChannelsSlice.js";
+import { selectToken, logOut } from "../slices/LoginSlice.js";
 import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSlice.js'
 import { MessageInput } from "../input/MessageInput.jsx";
-import { ChatList} from "../ChatComponent/ChatList.jsx";
+import { ChatList } from "../ChatComponent/ChatList.jsx";
 import { io } from 'socket.io-client';
 import { openModal } from "../slices/ModalSlice.js";
 import NewChannelModal from "../Modals/NewChannelModal.jsx"
 import EditChannelModal from "../Modals/ModalEditChannel.jsx";
 import { useTranslation } from 'react-i18next'
+import { LogButton } from '../Buttons/Button.jsx';
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 
 const Chats = () => {
-  
+
+  const navigate = useNavigate()
   const token = useSelector(selectToken)
   const activeChat = useSelector(selectActive)
   const dispatch = useDispatch()
   const messages = useSelector(selectMessages)
   const { t, i18n } = useTranslation()
 
+
   useEffect(() => {
     const socket = io();
 
     socket.on('newMessage', (payload) => {
       console.log('Новое сообщение через сокет:', payload);
-      dispatch(newMessage(payload)); 
+      dispatch(newMessage(payload));
     });
     socket.on('newChannel', (payload) => {
-    console.log('Создан новый канал:', payload);
-    dispatch(newChannel(payload));
+      console.log('Создан новый канал:', payload);
+      dispatch(newChannel(payload));
     });
     socket.on('removeChannel', (payload) => {
-    console.log('Канал удален, ID:', payload.id);
-    dispatch(removeChannel(payload.id));
+      console.log('Канал удален, ID:', payload.id);
+      dispatch(removeChannel(payload.id));
     });
+    socket.on('connect_error', (error) => {
+      toast("Нет сети")
+    })
     return () => {
       socket.off('newMessage');
       socket.off('newChannel')
@@ -44,9 +52,13 @@ const Chats = () => {
   }, [dispatch])
 
   useEffect(() => {
-  const loadData = async () => {
-    const result = await dispatch(fetchChannels(token)).unwrap();
-    dispatch(setActive(result[0]));
+    const loadData = async () => {
+      const result = await dispatch(fetchChannels(token)).unwrap();
+      dispatch(setActive(result[0]));
+
+      if (fetchChannels.rejected.match(result)) {
+        toast(result.payload)
+      }
     };
     loadData();
   }, [dispatch, token])
@@ -55,8 +67,11 @@ const Chats = () => {
     dispatch(fetchMessages(token))
   }, [activeChat, dispatch, token])
 
-
-  //console.log(activeChat)
+  const handleOut = async () => {
+    await dispatch(logOut()).unwrap
+    localStorage.removeItem('JWT')
+    navigate('/login', { replace: true })
+  }
 
   const styles = {
     wrapper: {
@@ -101,38 +116,41 @@ const Chats = () => {
 
   return (
     <div style={styles.wrapper}>
-      <NewChannelModal/>
-      <EditChannelModal/>
+      <NewChannelModal />
+      <EditChannelModal />
       <aside style={styles.sidebar}>
         <div style={{ padding: '20px', fontSize: '1.2rem', borderBottom: '1px solid #3e4f5f' }}>
           {t('chats.channels')}
         </div>
-        <div style={{ flex: 1, overflowY: 'auto' }}>
-          <button size="sm" onClick={() => dispatch(openModal({ type: 'adding', extraData: null}))}>
+        <div style={{ flex: 1, overflowY: 'auto', padding: '10px' }}>
+          <button size="sm" onClick={() => dispatch(openModal({ type: 'adding', extraData: null }))}>
             {t('chats.create')}
           </button>
-          <ChatList/>
+          <ChatList />
         </div>
       </aside>
 
       <main style={styles.chatContainer}>
         <header style={styles.header}>
-          {activeChat?.name ?? ""}
+          <div>
+            {activeChat?.name ?? ""}
+          </div>
+          <button variant="secondary" onClick={handleOut} className="me-2 ms-auto">Выйти</button>
         </header>
 
         <div style={styles.messagesList}>
           {messages
             .filter((message) => message.channelId === activeChat.id)
             .map((message) => (
-          <div key={message.id} style={{ background: 'white', padding: '10px', borderRadius: '8px', width: 'fit-content' }}>
-            {message.body}
-            </div>
+              <div key={message.id} style={{ background: 'white', padding: '10px', borderRadius: '8px', width: 'fit-content' }}>
+                {message.body}
+              </div>
             ))
           }
         </div>
-        <MessageInput/>
+        <MessageInput />
       </main>
     </div>
   )
 }
-export {Chats}
+export { Chats }

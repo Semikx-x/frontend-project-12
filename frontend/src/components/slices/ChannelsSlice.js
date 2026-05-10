@@ -15,10 +15,7 @@ export const fetchChannels = createAsyncThunk(
       return response.data
       
     } catch (error) {
-      if (error.response) {
-        return rejectWithValue('нет токена для каналов')
-      }
-      return rejectWithValue('Ошибка сети')
+      return rejectWithValue(getError(error))
     }
   }
 )
@@ -37,10 +34,7 @@ export const deleteChannel = createAsyncThunk(
       return response.data
       
     } catch (error) {
-      if (error.response) {
-        return rejectWithValue('нет токена для каналов')
-      }
-      return rejectWithValue('Ошибка сети')
+      return rejectWithValue(getError(error))
     }
   }
 )
@@ -60,10 +54,7 @@ export const renameChannel = createAsyncThunk(
       return response.data
       
     } catch (error) {
-      if (error.response) {
-        return rejectWithValue('нет токена для каналов')
-      }
-      return rejectWithValue('Ошибка сети')
+      return rejectWithValue(getError(error))
     }
   }
 )
@@ -81,10 +72,7 @@ export const addChannel = createAsyncThunk(
       return response.data
       
     } catch (error) {
-      if (error.response) {
-        return rejectWithValue('нет токена для каналов')
-      }
-      return rejectWithValue('Ошибка сети')
+      return rejectWithValue(getError(error))
     }
   }
 )
@@ -171,6 +159,13 @@ const channelsSlice = createSlice({
       });
   }
 })
+
+function getError(error) {
+  if (!error.response.status) {
+    return 'Ошибка сети'
+  }
+  return 'Ошибка при загрузке данных'
+}
 
 export default channelsSlice.reducer
 

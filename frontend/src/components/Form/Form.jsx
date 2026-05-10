@@ -7,6 +7,7 @@ import { fetchJWS, selectStatus, selectError, selectAuth, selectToken } from '..
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 
 export const LoginForm = () => {
   const dispatch = useDispatch()
@@ -27,14 +28,12 @@ export const LoginForm = () => {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const result = await dispatch(fetchJWS(values))
+      const result = await dispatch(fetchJWS(values)).unwrap()
       
-      if (fetchJWS.fulfilled.match(result)) {
-      } else if (fetchJWS.rejected.match(result)) {
+      if (fetchJWS.rejected.match(result)) {
         setErrors({ general: result.payload })
+        toast(result.payload)
       }
-    } catch (err) {
-      setErrors({ general: 'Произошла ошибка' })
     } finally {
       setSubmitting(false)
     }
@@ -45,7 +44,7 @@ export const LoginForm = () => {
       initialValues={initialValues}
       onSubmit={handleSubmit}
     >
-      {({ isSubmitting, errors, touched }) => (
+      {({ isSubmitting, errors }) => (
         <Form className="col-12 col-md-6 mt-3 mt-md-0">
           <h2 className="text-center mb-4">{t('login.log-in')}</h2>
           <Input

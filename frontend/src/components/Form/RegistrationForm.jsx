@@ -26,7 +26,7 @@ export const RegForm = () => {
     }
   }, [status, token])
 
-  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+  const handleSubmit = async (values, { setSubmitting, setErrors, setFieldTouched }) => {
     try {
       const result = await dispatch(signup(values)).unwrap()
       
@@ -34,8 +34,8 @@ export const RegForm = () => {
         setErrors({ general: result.payload })
       }
     } catch (err) {
-      console.log(err)
-      setErrors({ general: 'Произошла ошибка' })
+      setErrors({ general: err })
+      setFieldTouched('general', true, false);
     } finally {
       setSubmitting(false)
     }
@@ -48,44 +48,29 @@ export const RegForm = () => {
       onSubmit={handleSubmit}
     >
       {({ isSubmitting, errors, touched }) => (
-        <Form className="col-12 col-md-8 mt-3 mt-md-0">
-          <h1 className="text-center mb-6">{t('registr.reg')}</h1>
+        <Form className="w-100">
+          <h1 className="text-center mb-6 p-4">{t('registr.reg')}</h1>
           <Input
             name="userName"
             id="userName"
             placeholder={t('registr.placeholderL')}
           />
-          {/* {errors.userName && touched.userName && (
-            <div className="alert alert-danger mt-3" role="alert">
-              {errors.userName}
-            </div>
-          )} */}
           <Input
             name="password"
             id="password"
             placeholder={t('registr.placeholderP')}
           />
-          {/* {errors.password && touched.password && (
-            <div className="alert alert-danger mt-3" role="alert">
-              {errors.password}
-            </div>
-          )} */}
           <Input
             name="acceptPassword"
             id="acceptPassword"
             placeholder={t('registr.placeholderPP')}
           />
-          {/* {errors.acceptPassword && touched.acceptPassword && (
-            <div className="alert alert-danger mt-3" role="alert">
-              {errors.acceptPassword}
-            </div>
-          )} */}
-          <LogButton>{isSubmitting ? t('registr.reg') : t('registr.butReg')}</LogButton>
           {errors.general && touched.general && (
             <div className="alert alert-danger mt-3" role="alert">
               {errors.general}
             </div>
           )}
+          <LogButton>{isSubmitting ? t('registr.reg') : t('registr.butReg')}</LogButton>
         </Form>
       )}
     </Formik>

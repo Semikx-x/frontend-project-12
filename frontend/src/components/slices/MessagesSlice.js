@@ -3,44 +3,37 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export const fetchMessages = createAsyncThunk(
   'messages/fetchMessages',
-   async function(token1, { rejectWithValue }) {
+  async function (token1, { rejectWithValue }) {
     const token = localStorage.getItem('JWT')
     try {
       const response = await axios.get('/api/v1/messages', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      //console.log(response.data)
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       return response.data
-      
+
     } catch (error) {
-      if (error.response) {
-        return rejectWithValue('не нашел токена')
-      }
-      return rejectWithValue('Ошибка сети')
+      return rejectWithValue(getError(error))
     }
   }
 )
 
 export const addMessage = createAsyncThunk(
   'messages/addMessage',
-   async function(message, { rejectWithValue }) {
+  async function (message, { rejectWithValue }) {
     try {
       const token = localStorage.getItem('JWT')
       const response = await axios.post('/api/v1/messages', message, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       console.log(response.data)
       return response.data
-      
+
     } catch (error) {
-      if (error.response) {
-        return rejectWithValue('Ошибка затычка')
-      }
-      return rejectWithValue('Ошибка сети')
+      return rejectWithValue(getError(error))
     }
   }
 )
@@ -87,6 +80,13 @@ const messagesSlice = createSlice({
       });
   }
 })
+
+function getError(error) {
+  if (!error.response.status) {
+    return 'Ошибка сети'
+  }
+  return 'Ошибка при загрузке данных'
+}
 
 export default messagesSlice.reducer
 

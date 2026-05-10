@@ -42,8 +42,8 @@ export const signup = createAsyncThunk(
       
     } catch (error) {
       
-      if (error.response) {
-        return rejectWithValue('Неверные ник или пароль')
+      if (error.response.status === 409) {
+        return rejectWithValue('Пользователь уже зарегистрирован')
       }
       return rejectWithValue('Ошибка сети')
     }
@@ -71,6 +71,10 @@ const loginSlice = createSlice({
           state.auth = false;
         }
       }
+    },
+    logOut: (state) => {
+      state.token = null
+      state.auth = false
     }
   },
   extraReducers: (builder) => {
@@ -111,7 +115,7 @@ const loginSlice = createSlice({
   }
 })
 
-export const { restoreAuth } = loginSlice.actions
+export const { restoreAuth, logOut } = loginSlice.actions
 export default loginSlice.reducer
 
 export const selectStatus = (state) => state.login.status
