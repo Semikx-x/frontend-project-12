@@ -5,7 +5,7 @@ import { Chats } from './components/pages/chats.jsx';
 import { useEffect } from 'react';
 import { restoreAuth } from './components/slices/LoginSlice.js';
 import { Registration } from './components/pages/registration.jsx';
-import { Layout } from './components/Layout';
+import { Layout } from './components/layout.jsx';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 
 const rollbarConfig = {
