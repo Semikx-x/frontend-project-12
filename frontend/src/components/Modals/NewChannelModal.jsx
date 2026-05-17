@@ -5,13 +5,14 @@ import { closeModal, selectExtraData, selectOpen, selectType } from '../slices/M
 import { addChannel, selectChannels } from '../slices/ChannelsSlice.js';
 import { useTranslation } from 'react-i18next'
 import { getChannelSchema } from '../Form/schema.js';
+import { toast } from 'react-toastify'
 
 const NewChannelModal = () => {
   const dispatch = useDispatch();
   const isOpen = useSelector(selectOpen)
   const type = useSelector(selectType)
   const extraData = useSelector(selectExtraData)
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const channels = useSelector(selectChannels)
 
   if (!isOpen || type !== 'adding') return null;
@@ -30,7 +31,7 @@ const NewChannelModal = () => {
         validationSchema={getChannelSchema(channels)}
         onSubmit={async (values) => {
           await dispatch(addChannel(values))
-          console.log(values);
+          toast(t('modal.newChanelSuccess'))
           handleClose();
         }}
       >

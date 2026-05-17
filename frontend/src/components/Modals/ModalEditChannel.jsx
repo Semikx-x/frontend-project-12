@@ -5,6 +5,7 @@ import { closeModal, selectExtraData, selectOpen, selectType } from '../slices/M
 import { renameChannel, deleteChannel, selectChannels } from '../slices/ChannelsSlice.js';
 import { useTranslation } from 'react-i18next'
 import { getChannelSchema } from '../Form/schema.js';
+import { toast } from 'react-toastify'
 
 const EditChannelModal = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const EditChannelModal = () => {
   const handleDelete = async () => {
     if (window.confirm(`${t('modal.youSure')} "${extraData.name}"?`)) {
       await dispatch(deleteChannel(extraData.id));
+      toast(t('modal.deleteChanel'))
       handleClose();
     }
   };
@@ -36,6 +38,7 @@ const EditChannelModal = () => {
         validationSchema={getChannelSchema(channels)}
         onSubmit={async (values) => {
           await dispatch(renameChannel({ id: extraData.id, name: values.name }));
+          toast(t('modal.editChanelSuccess'))
           handleClose();
         }}
       >

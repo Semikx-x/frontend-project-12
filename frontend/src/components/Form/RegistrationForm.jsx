@@ -12,7 +12,7 @@ import { getRegistrationSchema } from '../Form/schema.js'
 export const RegForm = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const status = useSelector(selectStatus)
   const error = useSelector(selectError)

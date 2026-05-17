@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { LogButton } from '../Buttons/Button.jsx';
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import filter from 'leo-profanity'
 
 
 const Chats = () => {
@@ -22,7 +23,8 @@ const Chats = () => {
   const activeChat = useSelector(selectActive)
   const dispatch = useDispatch()
   const messages = useSelector(selectMessages)
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
+  filter.loadDictionary('ru')
 
 
   useEffect(() => {
@@ -143,7 +145,7 @@ const Chats = () => {
             .filter((message) => message.channelId === activeChat.id)
             .map((message) => (
               <div key={message.id} style={{ background: 'white', padding: '10px', borderRadius: '8px', width: 'fit-content' }}>
-                {message.body}
+                {filter.clean(message.body)}
               </div>
             ))
           }
