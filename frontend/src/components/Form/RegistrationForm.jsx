@@ -22,7 +22,7 @@ export const RegForm = () => {
   useEffect(() => {
     
     if (status === 'succeeded' && isAuth === true) {
-      navigate('/main', { replace: true })
+      navigate('/', { replace: true })
     }
   }, [status, token])
 
