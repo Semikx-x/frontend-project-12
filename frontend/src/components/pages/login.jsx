@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 
 const Login = () => {
   const navigate = useNavigate()
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const isAuth = useSelector(selectAuth)
   const token = useSelector(selectToken)
@@ -15,7 +15,7 @@ const Login = () => {
   useEffect(() => {
     
     if (isAuth === true) {
-      navigate('/main', { replace: true })
+      navigate('/', { replace: true })
     }
   }, [status, token])
 

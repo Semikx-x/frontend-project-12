@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { fetchChannels, setActive, selectActive, newChannel, removeChannel } from "../slices/ChannelsSlice.js";
-import { selectToken, logOut } from "../slices/LoginSlice.js";
+import { selectToken, logOut, selectAuth } from "../slices/LoginSlice.js";
 import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSlice.js'
 import { MessageInput } from "../input/MessageInput.jsx";
 import { ChatList } from "../ChatComponent/ChatList.jsx";
@@ -10,7 +10,6 @@ import { openModal } from "../slices/ModalSlice.js";
 import NewChannelModal from "../Modals/NewChannelModal.jsx"
 import EditChannelModal from "../Modals/ModalEditChannel.jsx";
 import { useTranslation } from 'react-i18next'
-import { LogButton } from '../Buttons/Button.jsx';
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import filter from 'leo-profanity'
@@ -25,7 +24,16 @@ const Chats = () => {
   const messages = useSelector(selectMessages)
   const { t } = useTranslation()
   filter.loadDictionary('ru')
+  const isAuth = useSelector(selectAuth)
+  
 
+
+  useEffect(() => {
+    
+    if (!isAuth) {
+      navigate('/login', { replace: true })
+    }
+  })
 
   useEffect(() => {
     const socket = io();
@@ -42,7 +50,7 @@ const Chats = () => {
       console.log('Канал удален, ID:', payload.id);
       dispatch(removeChannel(payload.id));
     });
-    socket.on('connect_error', (error) => {
+    socket.on('connect_error', () => {
       toast("Нет сети")
     })
     return () => {
@@ -137,7 +145,7 @@ const Chats = () => {
           <div>
             {activeChat?.name ?? ""}
           </div>
-          <button variant="secondary" onClick={handleOut} className="me-2 ms-auto">Выйти</button>
+          <button onClick={handleOut} className="me-2 ms-auto">Выйти</button>
         </header>
 
         <div style={styles.messagesList}>

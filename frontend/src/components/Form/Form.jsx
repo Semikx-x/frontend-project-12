@@ -2,29 +2,14 @@ import {Formik, Form} from 'formik'
 import { initialValues } from './helper.js'
 import { Input } from '../input/Input.jsx'
 import { LogButton } from '../Buttons/Button.jsx'
-import { useEffect } from 'react'
-import { fetchJWS, selectStatus, selectError, selectAuth, selectToken } from '../slices/LoginSlice.js'
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom'
+import { fetchJWS } from '../slices/LoginSlice.js'
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 export const LoginForm = () => {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { t, i18n } = useTranslation();
-
-  const status = useSelector(selectStatus)
-  const error = useSelector(selectError)
-  const isAuth = useSelector(selectAuth)
-  const token = useSelector(selectToken)
-
-  useEffect(() => {
-    
-    if (status === 'succeeded' && isAuth === true) {
-      navigate('/main', { replace: true })
-    }
-  }, [status, token])
+  const { t } = useTranslation();
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {

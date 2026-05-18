@@ -34,8 +34,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<Layout />}>
-              <Route path="/main" element={<Chats />} />
-              <Route path="/" element={<Login />} />
+              {/* <Route path="/main" element={<Chats />} /> */}
+              <Route path="/" element={<Chats />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Registration />} />
               
