@@ -2,7 +2,7 @@
    "login": {
     "log-in": "Войти",
     "placeholderL": "Введите ник",
-    "placeholderP": "Введите Пароль",
+    "placeholderP": "Пароль",
     "butLog": "Войти",
     "ing": "Вход...",
     "NoAcc": "Нет аккаунта? ",
@@ -10,8 +10,8 @@
    },
    "registr": {
     "reg": "Регистрация",
-    "placeholderL": "Введите ник",
-    "placeholderP": "Введите Пароль",
+    "placeholderL": "Имя пользователя",
+    "placeholderP": "Пароль",
     "placeholderPP": "Подтвердите Пароль",
     "butReg": "Зарегистрироваться"
    },
@@ -34,5 +34,8 @@
    "errors": {
       "netError": "Ошибка сети",
       "loadError": "Ошибка при загрузке данных"
+   },
+   "menu": {
+      "chat": "Hexlet Chat"
    }
 }
