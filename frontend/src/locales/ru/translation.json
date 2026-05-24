@@ -23,9 +23,10 @@
     "save": "Сохранить",
     "delete": "Удалить",
     "editChanelSuccess": "Имя успешно изменено",
-    "deleteChanel": "Канал удален",
+    "deleteChanel": "Канал удалён",
     "newChanelSuccess": "Канал создан",
-    "youSure": "Вы уверены, что хотите удалить канал"
+    "youSure": "Вы уверены, что хотите удалить канал",
+    "rename": "Переименовать"
    },
    "chats": {
     "channels": "Каналы",

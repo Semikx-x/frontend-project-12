@@ -6,6 +6,7 @@ import { addChannel, selectChannels } from '../slices/ChannelsSlice.js';
 import { useTranslation } from 'react-i18next'
 import { getChannelSchema } from '../Form/schema.js';
 import { toast } from 'react-toastify'
+import { Input } from '../input/Input.jsx'
 
 const NewChannelModal = () => {
   const dispatch = useDispatch();
@@ -38,21 +39,12 @@ const NewChannelModal = () => {
         {({ handleSubmit, handleChange, errors, values, isSubmitting }) => (
           <Form onSubmit={handleSubmit}>
             <Modal.Body>
-              <Form.Group>
-                <Form.Label>{t('modal.nameChanel')}</Form.Label>
-                <Form.Control
-                  name="name"
-                  value={values.name}
-                  label={t('modal.nameChanel')}
-                  onChange={handleChange}
-                  autoFocus
-                />
-                {errors.name && (
-                  <div className="alert alert-danger mt-3" role="alert">
-                    {errors.name}
-                  </div>
-                )}
-              </Form.Group>
+              <Input
+                name="name"
+                id="name"
+                placeholder={t('modal.nameChanel')}
+                label={t('modal.nameChanel')}>
+              </Input>
             </Modal.Body>
 
             <Modal.Footer className="d-flex justify-content-between">

@@ -6,6 +6,7 @@ import { renameChannel, deleteChannel, selectChannels } from '../slices/Channels
 import { useTranslation } from 'react-i18next'
 import { getChannelSchema } from '../Form/schema.js';
 import { toast } from 'react-toastify'
+import { Input } from '../input/Input.jsx'
 
 const EditChannelModal = () => {
   const dispatch = useDispatch();
@@ -42,23 +43,15 @@ const EditChannelModal = () => {
           handleClose();
         }}
       >
-        {({ handleSubmit, handleChange,errors, values, isSubmitting }) => (
+        {({ handleSubmit, handleChange, errors, values, isSubmitting }) => (
           <Form onSubmit={handleSubmit}>
             <Modal.Body>
-              <Form.Group>
-                <Form.Label>{t('modal.nameChanel')}</Form.Label>
-                <Form.Control
-                  name="name"
-                  value={values.name}
-                  onChange={handleChange}
-                  autoFocus
-                />
-                {errors.name && (
-                  <div className="alert alert-danger mt-3" role="alert">
-                    {errors.name}
-                  </div>
-                )}
-              </Form.Group>
+              <Input
+                name="name"
+                id="name"
+                placeholder={t('modal.nameChanel')}
+                label={t('modal.rename')}>
+              </Input>
             </Modal.Body>
 
             <Modal.Footer className="d-flex justify-content-between">
@@ -71,7 +64,7 @@ const EditChannelModal = () => {
                   {t('modal.abort')}
                 </Button>
                 <Button variant="primary" type="submit" disabled={isSubmitting}>
-                  {t('modal.save')}
+                  {t('modal.rename')}
                 </Button>
               </div>
             </Modal.Footer>

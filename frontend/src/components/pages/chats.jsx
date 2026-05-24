@@ -23,7 +23,9 @@ const Chats = () => {
   const dispatch = useDispatch()
   const messages = useSelector(selectMessages)
   const { t } = useTranslation()
-  filter.loadDictionary('ru')
+  filter.clearList()
+  filter.add(filter.getDictionary('en'))
+  filter.add(filter.getDictionary('ru'))
   const isAuth = useSelector(selectAuth)
   
 

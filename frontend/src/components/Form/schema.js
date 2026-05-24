@@ -4,7 +4,9 @@ import filter from 'leo-profanity'
 export const getChannelSchema = (channels) => {
 
   const channelsNames = channels.map(chat => chat.name)
-  filter.loadDictionary('ru')
+  filter.clearList()
+  filter.add(filter.getDictionary('en'))
+  filter.add(filter.getDictionary('ru'))
 
   return yup.object().shape({
     name: yup
@@ -12,13 +14,13 @@ export const getChannelSchema = (channels) => {
       .trim()
       .required('Обязательное поле')
       .notOneOf(channelsNames, 'Канал с таким названием уже существует!')
-      .min(3, 'Минимальная длина 3 символа')
-      .max(20, 'Максимальная длина 20 символов')
-      .test(
-        'BadWords',
-        'Матюки это плохо)',
-        (value) => !filter.check(value)
-      )
+      .min(3, 'От 3 до 20 символов')
+      .max(20, 'От 3 до 20 символов')
+      // .test(
+      //   'BadWords',
+      //   'Матюки это плохо)',
+      //   (value) => !filter.check(value)
+      // )
   })
 }
 
