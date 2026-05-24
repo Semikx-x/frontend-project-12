@@ -11,7 +11,7 @@ export const LoginForm = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation();
 
-  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+  const handleSubmit = async (values, { setSubmitting, setErrors, setFieldTouched }) => {
     try {
       const result = await dispatch(fetchJWS(values)).unwrap()
       
@@ -19,6 +19,9 @@ export const LoginForm = () => {
         setErrors({ general: result.payload })
         toast(result.payload)
       }
+    } catch (err) {
+      setErrors({ general: err })
+      setFieldTouched('general', true, false);
     } finally {
       setSubmitting(false)
     }
@@ -29,20 +32,22 @@ export const LoginForm = () => {
       initialValues={initialValues}
       onSubmit={handleSubmit}
     >
-      {({ isSubmitting, errors }) => (
-        <Form className="col-12 col-md-6 mt-3 mt-md-0">
+      {({ isSubmitting, errors, touched }) => (
+        <Form className="w-100">
           <h2 className="text-center mb-4">{t('login.log-in')}</h2>
           <Input
             name="userName"
             id="userName"
             placeholder={t('login.placeholderL')}
+            label={t('login.placeholderL')}
           />
           <Input
             name="password"
             id="password"
             placeholder={t('login.placeholderP')}
+            label={t('login.placeholderP')}
           />
-          {errors.general && (
+          {errors.general && touched.general && (
             <div className="alert alert-danger mt-3" role="alert">
               {errors.general}
             </div>

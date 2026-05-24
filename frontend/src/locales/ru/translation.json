@@ -1,7 +1,7 @@
 {
    "login": {
     "log-in": "Войти",
-    "placeholderL": "Введите ник",
+    "placeholderL": "Ваш ник",
     "placeholderP": "Пароль",
     "butLog": "Войти",
     "ing": "Вход...",
@@ -18,18 +18,18 @@
    "modal": {
     "newChanel": "Создание канала",
     "editChanel": "Настройки канала",
-    "nameChanel": "Название канала",
+    "nameChanel": "Имя канала",
     "abort": "Отмена",
     "save": "Сохранить",
     "delete": "Удалить",
-    "editChanelSuccess": "Название успешно изменено",
+    "editChanelSuccess": "Имя успешно изменено",
     "deleteChanel": "Канал удален",
     "newChanelSuccess": "Канал создан",
     "youSure": "Вы уверены, что хотите удалить канал"
    },
    "chats": {
     "channels": "Каналы",
-    "create": "Создать канал"
+    "create": "+"
    },
    "errors": {
       "netError": "Ошибка сети",

@@ -43,6 +43,7 @@ const NewChannelModal = () => {
                 <Form.Control
                   name="name"
                   value={values.name}
+                  label={t('modal.nameChanel')}
                   onChange={handleChange}
                   autoFocus
                 />

@@ -53,17 +53,20 @@ export const RegForm = () => {
           <Input
             name="userName"
             id="userName"
-            placeholder={t('registr.placeholderL')}
+            placeholder={t('login.placeholderL')}
+            label={t('registr.placeholderL')}
           />
           <Input
             name="password"
             id="password"
             placeholder={t('registr.placeholderP')}
+            label={t('registr.placeholderP')}
           />
           <Input
             name="acceptPassword"
             id="acceptPassword"
             placeholder={t('registr.placeholderPP')}
+            label={t('registr.placeholderPP')}
           />
           {errors.general && touched.general && (
             <div className="alert alert-danger mt-3" role="alert">

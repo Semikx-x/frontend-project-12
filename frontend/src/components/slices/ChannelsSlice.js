@@ -44,13 +44,11 @@ export const renameChannel = createAsyncThunk(
    async function({ id, name }, { rejectWithValue }) {
     try {
       const token = localStorage.getItem('JWT')
-      console.log({ id })
       const response = await axios.patch(`/api/v1/channels/${id}`, { name }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-      console.log('канал изменен')
       return response.data
       
     } catch (error) {
@@ -138,7 +136,6 @@ const channelsSlice = createSlice({
           if (index !== -1) {
             state.chats[index] = action.payload;
           }
-        console.log(state.chats)
         state.error = null;
       })
       .addCase(renameChannel.rejected, (state, action) => {

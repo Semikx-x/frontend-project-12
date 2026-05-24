@@ -19,11 +19,11 @@ export const Layout = () => {
         newestOnTop={false}
         closeOnClick={false}
         rtl={false}
+        transition={Bounce}
         pauseOnFocusLoss
         draggable
         pauseOnHover
         theme="light"
-        transition={Bounce}
       />
       <main>
         <Outlet />

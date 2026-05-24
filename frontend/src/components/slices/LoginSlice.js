@@ -19,7 +19,7 @@ export const fetchJWS = createAsyncThunk(
     } catch (error) {
       
       if (error.response) {
-        return rejectWithValue('Неверные ник или пароль')
+        return rejectWithValue('Неверные имя пользователя или пароль')
       }
       return rejectWithValue('Ошибка сети')
     }
@@ -43,7 +43,7 @@ export const signup = createAsyncThunk(
     } catch (error) {
       
       if (error.response.status === 409) {
-        return rejectWithValue('Пользователь уже зарегистрирован')
+        return rejectWithValue('Такой пользователь уже существует')
       }
       return rejectWithValue('Ошибка сети')
     }
@@ -105,7 +105,6 @@ const loginSlice = createSlice({
         state.token = action.payload.token;
         state.error = null;
         state.userName = action.payload.userName
-        console.log(action.payload)
       })
       .addCase(signup.rejected, (state, action) => {
         state.status = 'failed';

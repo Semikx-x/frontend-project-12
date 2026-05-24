@@ -63,6 +63,7 @@ export const MessageInput = () => {
               name="body"
               style={styles.input}
               type="text"
+              aria-label="Новое сообщение"
               placeholder="Написать сообщение"
               value={values.body}
               onChange={handleChange}
