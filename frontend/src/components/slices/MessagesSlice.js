@@ -69,7 +69,7 @@ const messagesSlice = createSlice({
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(addMessage.fulfilled, (state, action) => {
+      .addCase(addMessage.fulfilled, (state) => {
         state.status = 'succeeded';
         state.error = null;
       })

@@ -149,6 +149,7 @@ const channelsSlice = createSlice({
       .addCase(addChannel.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.error = null;
+        state.activeChat = action.payload
       })
       .addCase(addChannel.rejected, (state, action) => {
         state.status = 'failed';

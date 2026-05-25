@@ -3,28 +3,50 @@ import { createSlice } from '@reduxjs/toolkit';
 const modalsSlice = createSlice({
   name: 'modals',
   initialState: { 
-    isOpen: false,
-    type: null,
-    extraData: null
+    editing: { isOpen: false, extraData: null },
+    delete: { isOpen: false, extraData: null },
+    adding: { isOpen: false, extraData: null },
+    isEdit: false
   },
   reducers: {
-    openModal: (state, action) => {
-      state.isOpen = true;
-      state.type = action.payload.type;
-      state.extraData = action.payload.extraData;
+    openEditModal: (state, action) => {
+      state.editing.isOpen = true;
+      state.editing.extraData = action.payload.extraData;
     },
-    closeModal: (state) => {
-      state.isOpen = false;
-      state.type = null;
-      state.extraData = null;
+    openDeleteModal: (state, action) => {
+      state.delete.isOpen = true;
+      state.delete.extraData = action.payload.extraData;
     },
+    openAddModal: (state, action) => {
+      state.adding.isOpen = true;
+      state.adding.extraData = action.payload.extraData;
+    },
+    closeEditModal: (state) => {
+      state.editing.isOpen = false;
+      state.editing.extraData = null;
+    },
+    closeDeleteModal: (state) => {
+      state.delete.isOpen = false;
+      state.delete.extraData = null;
+      state.editing.isOpen = false;
+      state.editing.extraData = null;
+    },
+    closeAddModal: (state) => {
+      state.adding.isOpen = false;
+      state.adding.extraData = null;
+    },
+    turnOnEdit: (state) => {
+      state.isEdit = !state.isEdit
+      console.log(state.isEdit)
+    }
   },
 });
 
-export const { openModal, closeModal } = modalsSlice.actions;
+export const { openEditModal, openAddModal, openDeleteModal, closeAddModal, closeDeleteModal, closeEditModal, turnOnEdit } = modalsSlice.actions;
 
 export default modalsSlice.reducer
 
-export const selectOpen = (state) => state.modals.isOpen
-export const selectType = (state) => state.modals.type
-export const selectExtraData = (state) => state.modals.extraData
+export const selectEditing = (state) => state.modals.editing
+export const selectDelete = (state) => state.modals.delete
+export const selectAdding = (state) => state.modals.adding
+export const selectIsEdit = (state) => state.modals.isEdit

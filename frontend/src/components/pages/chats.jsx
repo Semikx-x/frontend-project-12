@@ -6,9 +6,10 @@ import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSli
 import { MessageInput } from "../input/MessageInput.jsx";
 import { ChatList } from "../ChatComponent/ChatList.jsx";
 import { io } from 'socket.io-client';
-import { openModal } from "../slices/ModalSlice.js";
+import { openAddModal } from "../slices/ModalSlice.js";
 import NewChannelModal from "../Modals/NewChannelModal.jsx"
 import EditChannelModal from "../Modals/ModalEditChannel.jsx";
+import ModalDelete from '../Modals/ModalDelete.jsx';
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -130,12 +131,13 @@ const Chats = () => {
     <div style={styles.wrapper}>
       <NewChannelModal />
       <EditChannelModal />
+      <ModalDelete />
       <aside style={styles.sidebar}>
         <div style={{ padding: '20px', fontSize: '1.2rem', borderBottom: '1px solid #3e4f5f' }}>
           {t('chats.channels')}
         </div>
         <div style={{ flex: 1, overflowY: 'auto', padding: '10px' }}>
-          <button size="sm" onClick={() => dispatch(openModal({ type: 'adding', extraData: null }))}>
+          <button size="sm" onClick={() => dispatch(openAddModal({ extraData: null }))}>
             {t('chats.create')}
           </button>
           <ChatList />
@@ -155,6 +157,7 @@ const Chats = () => {
             .filter((message) => message.channelId === activeChat.id)
             .map((message) => (
               <div key={message.id} style={{ background: 'white', padding: '10px', borderRadius: '8px', width: 'fit-content' }}>
+                <div>{message.userName}</div>
                 {filter.clean(message.body)}
               </div>
             ))

@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { selectChannels, setActive } from "../slices/ChannelsSlice.js";
-import { openModal } from '../slices/ModalSlice.js';
+import { openEditModal } from '../slices/ModalSlice.js';
 import filter from 'leo-profanity'
 
 
@@ -21,7 +21,7 @@ export const ChatList = () => {
           <button 
             variant="outline-light" 
             size="sm" 
-            onClick={() => dispatch(openModal({ type: 'editing', extraData: chan }))}
+            onClick={() => dispatch(openEditModal({ extraData: chan }))}
           >
             Управление каналом
           </button>

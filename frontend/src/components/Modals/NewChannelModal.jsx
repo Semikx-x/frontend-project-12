@@ -1,7 +1,7 @@
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
-import { closeModal, selectExtraData, selectOpen, selectType } from '../slices/ModalSlice.js';
+import { closeAddModal, selectAdding } from '../slices/ModalSlice.js';
 import { addChannel, selectChannels } from '../slices/ChannelsSlice.js';
 import { useTranslation } from 'react-i18next'
 import { getChannelSchema } from '../Form/schema.js';
@@ -10,25 +10,23 @@ import { Input } from '../input/Input.jsx'
 
 const NewChannelModal = () => {
   const dispatch = useDispatch();
-  const isOpen = useSelector(selectOpen)
-  const type = useSelector(selectType)
-  const extraData = useSelector(selectExtraData)
+  const type = useSelector(selectAdding)
   const { t } = useTranslation()
   const channels = useSelector(selectChannels)
 
-  if (!isOpen || type !== 'adding') return null;
+  if (!type.isOpen) return null;
 
-  const handleClose = () => dispatch(closeModal());
+  const handleClose = () => dispatch(closeAddModal());
 
 
   return (
-    <Modal show={isOpen} onHide={handleClose} centered>
+    <Modal show={type.isOpen} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>{t('modal.newChanel')}</Modal.Title>
       </Modal.Header>
 
       <Formik
-        initialValues={{ name: extraData?.name || '' }}
+        initialValues={{ name: type.extraData?.name || '' }}
         validationSchema={getChannelSchema(channels)}
         onSubmit={async (values) => {
           await dispatch(addChannel(values))
@@ -36,7 +34,7 @@ const NewChannelModal = () => {
           handleClose();
         }}
       >
-        {({ handleSubmit, handleChange, errors, values, isSubmitting }) => (
+        {({ handleSubmit, isSubmitting }) => (
           <Form onSubmit={handleSubmit}>
             <Modal.Body>
               <Input
