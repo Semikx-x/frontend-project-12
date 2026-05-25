@@ -2,11 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const modalsSlice = createSlice({
   name: 'modals',
-  initialState: { 
+  initialState: {
     editing: { isOpen: false, extraData: null },
     delete: { isOpen: false, extraData: null },
     adding: { isOpen: false, extraData: null },
-    isEdit: false
+    isEdit: false,
   },
   reducers: {
     openEditModal: (state, action) => {
@@ -36,17 +36,19 @@ const modalsSlice = createSlice({
       state.adding.extraData = null;
     },
     turnOnEdit: (state) => {
-      state.isEdit = !state.isEdit
-      console.log(state.isEdit)
-    }
+      state.isEdit = !state.isEdit;
+      console.log(state.isEdit);
+    },
   },
 });
 
-export const { openEditModal, openAddModal, openDeleteModal, closeAddModal, closeDeleteModal, closeEditModal, turnOnEdit } = modalsSlice.actions;
+export const {
+  openEditModal, openAddModal, openDeleteModal, closeAddModal, closeDeleteModal, closeEditModal, turnOnEdit,
+} = modalsSlice.actions;
 
-export default modalsSlice.reducer
+export default modalsSlice.reducer;
 
-export const selectEditing = (state) => state.modals.editing
-export const selectDelete = (state) => state.modals.delete
-export const selectAdding = (state) => state.modals.adding
-export const selectIsEdit = (state) => state.modals.isEdit
+export const selectEditing = (state) => state.modals.editing;
+export const selectDelete = (state) => state.modals.delete;
+export const selectAdding = (state) => state.modals.adding;
+export const selectIsEdit = (state) => state.modals.isEdit;

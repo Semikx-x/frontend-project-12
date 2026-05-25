@@ -1,26 +1,26 @@
-import { useSelector, useDispatch } from 'react-redux'
-import {selectActive } from "../slices/ChannelsSlice.js";
-import { selectUser } from "../slices/LoginSlice.js";
-import { addMessage } from '../slices/MessagesSlice.js'
+import { useSelector, useDispatch } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
+import { selectActive } from '../slices/ChannelsSlice.js';
+import { selectUser } from '../slices/LoginSlice.js';
+import { addMessage } from '../slices/MessagesSlice.js';
 
 export const MessageInput = () => {
-  const activeChat = useSelector(selectActive)
-  const user = useSelector(selectUser)
-  const dispatch = useDispatch()
+  const activeChat = useSelector(selectActive);
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   const styles = {
     inputWrapper: {
       padding: '20px',
       backgroundColor: 'white',
-      borderTop: '1px solid #ddd'
+      borderTop: '1px solid #ddd',
     },
     form: {
       display: 'flex',
       gap: '10px',
       maxWidth: '1000px',
       margin: '0 auto',
-      width: '100%'
+      width: '100%',
     },
     input: {
       flex: 1,
@@ -28,7 +28,7 @@ export const MessageInput = () => {
       borderRadius: '8px',
       border: '1px solid #ccc',
       outline: 'none',
-      fontSize: '16px'
+      fontSize: '16px',
     },
     button: {
       padding: '10px 25px',
@@ -37,9 +37,9 @@ export const MessageInput = () => {
       border: 'none',
       borderRadius: '8px',
       cursor: 'pointer',
-      fontWeight: '600'
-    }
-  }
+      fontWeight: '600',
+    },
+  };
 
   return (
     <Formik
@@ -47,7 +47,7 @@ export const MessageInput = () => {
       onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
         const message = { body: values.body, channelId: activeChat.id, userName: user };
         const result = await dispatch(addMessage(message));
-        
+
         if (addMessage.fulfilled.match(result)) {
           resetForm();
         } else {
@@ -56,7 +56,9 @@ export const MessageInput = () => {
         setSubmitting(false);
       }}
     >
-      {({ values, handleChange, handleSubmit, isSubmitting }) => (
+      {({
+        values, handleChange, handleSubmit, isSubmitting,
+      }) => (
         <footer style={styles.inputWrapper}>
           <Form style={styles.form} onSubmit={handleSubmit}>
             <Field
@@ -69,9 +71,9 @@ export const MessageInput = () => {
               onChange={handleChange}
               disabled={isSubmitting}
             />
-            <button 
-              style={styles.button} 
-              type="submit" 
+            <button
+              style={styles.button}
+              type="submit"
               disabled={isSubmitting || !values.body.trim()}
             >
               {isSubmitting ? '...' : 'Отправить'}
@@ -81,4 +83,4 @@ export const MessageInput = () => {
       )}
     </Formik>
   );
-}
+};

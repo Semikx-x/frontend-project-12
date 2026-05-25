@@ -1,42 +1,39 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
-import { fetchChannels, setActive, selectActive, newChannel, removeChannel } from "../slices/ChannelsSlice.js";
-import { selectToken, logOut, selectAuth } from "../slices/LoginSlice.js";
-import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSlice.js'
-import { MessageInput } from "../input/MessageInput.jsx";
-import { ChatList } from "../ChatComponent/ChatList.jsx";
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import { io } from 'socket.io-client';
-import { openAddModal } from "../slices/ModalSlice.js";
-import NewChannelModal from "../Modals/NewChannelModal.jsx"
-import EditChannelModal from "../Modals/ModalEditChannel.jsx";
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
+import {
+  fetchChannels, setActive, selectActive, newChannel, removeChannel,
+} from '../slices/ChannelsSlice.js';
+import { selectToken, logOut, selectAuth } from '../slices/LoginSlice.js';
+import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSlice.js';
+import { MessageInput } from '../input/MessageInput.jsx';
+import { ChatList } from '../ChatComponent/ChatList.jsx';
+import { openAddModal } from '../slices/ModalSlice.js';
+import NewChannelModal from '../Modals/NewChannelModal.jsx';
+import EditChannelModal from '../Modals/ModalEditChannel.jsx';
 import ModalDelete from '../Modals/ModalDelete.jsx';
-import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import filter from 'leo-profanity'
-
 
 const Chats = () => {
-
-  const navigate = useNavigate()
-  const token = useSelector(selectToken)
-  const activeChat = useSelector(selectActive)
-  const dispatch = useDispatch()
-  const messages = useSelector(selectMessages)
-  const { t } = useTranslation()
-  filter.clearList()
-  filter.add(filter.getDictionary('en'))
-  filter.add(filter.getDictionary('ru'))
-  const isAuth = useSelector(selectAuth)
-  
-
+  const navigate = useNavigate();
+  const token = useSelector(selectToken);
+  const activeChat = useSelector(selectActive);
+  const dispatch = useDispatch();
+  const messages = useSelector(selectMessages);
+  const { t } = useTranslation();
+  filter.clearList();
+  filter.add(filter.getDictionary('en'));
+  filter.add(filter.getDictionary('ru'));
+  const isAuth = useSelector(selectAuth);
 
   useEffect(() => {
-    
     if (!isAuth) {
-      navigate('/login', { replace: true })
+      navigate('/login', { replace: true });
     }
-  })
+  });
 
   useEffect(() => {
     const socket = io();
@@ -54,15 +51,15 @@ const Chats = () => {
       dispatch(removeChannel(payload.id));
     });
     socket.on('connect_error', () => {
-      toast("Нет сети")
-    })
+      toast('Нет сети');
+    });
     return () => {
       socket.off('newMessage');
-      socket.off('newChannel')
-      socket.off('removeChannel')
+      socket.off('newChannel');
+      socket.off('removeChannel');
       socket.disconnect();
     };
-  }, [dispatch])
+  }, [dispatch]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -70,21 +67,21 @@ const Chats = () => {
       dispatch(setActive(result[0]));
 
       if (fetchChannels.rejected.match(result)) {
-        toast(result.payload)
+        toast(result.payload);
       }
     };
     loadData();
-  }, [dispatch, token])
+  }, [dispatch, token]);
 
   useEffect(() => {
-    dispatch(fetchMessages(token))
-  }, [activeChat, dispatch, token])
+    dispatch(fetchMessages(token));
+  }, [activeChat, dispatch, token]);
 
   const handleOut = async () => {
-    await dispatch(logOut()).unwrap
-    localStorage.removeItem('JWT')
-    navigate('/login', { replace: true })
-  }
+    await dispatch(logOut()).unwrap;
+    localStorage.removeItem('JWT');
+    navigate('/login', { replace: true });
+  };
 
   const styles = {
     wrapper: {
@@ -92,21 +89,21 @@ const Chats = () => {
       height: '100vh',
       width: '100vw',
       overflow: 'hidden',
-      fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif'
+      fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
     },
     sidebar: {
       width: '260px',
       backgroundColor: '#2c3e50',
       color: 'white',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
     },
     chatContainer: {
       flex: 1,
       display: 'flex',
       flexDirection: 'column',
       backgroundColor: '#f5f5f5',
-      position: 'relative'
+      position: 'relative',
     },
     header: {
       height: '60px',
@@ -115,7 +112,7 @@ const Chats = () => {
       borderBottom: '1px solid #ddd',
       display: 'flex',
       alignItems: 'center',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
     },
     messagesList: {
       flex: 1,
@@ -123,7 +120,7 @@ const Chats = () => {
       padding: '20px',
       display: 'flex',
       flexDirection: 'column',
-      gap: '10px'
+      gap: '10px',
     },
   };
 
@@ -147,7 +144,7 @@ const Chats = () => {
       <main style={styles.chatContainer}>
         <header style={styles.header}>
           <div>
-            {activeChat?.name ?? ""}
+            {activeChat?.name ?? ''}
           </div>
           <button onClick={handleOut} className="me-2 ms-auto">Выйти</button>
         </header>
@@ -156,16 +153,20 @@ const Chats = () => {
           {messages
             .filter((message) => message.channelId === activeChat.id)
             .map((message) => (
-              <div key={message.id} style={{ background: 'white', padding: '10px', borderRadius: '8px', width: 'fit-content' }}>
+              <div
+                key={message.id}
+                style={{
+                  background: 'white', padding: '10px', borderRadius: '8px', width: 'fit-content',
+                }}
+              >
                 <div>{message.userName}</div>
                 {filter.clean(message.body)}
               </div>
-            ))
-          }
+            ))}
         </div>
         <MessageInput />
       </main>
     </div>
-  )
-}
-export { Chats }
+  );
+};
+export { Chats };

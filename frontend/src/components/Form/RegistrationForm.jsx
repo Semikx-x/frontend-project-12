@@ -1,48 +1,49 @@
-import {Formik, Form} from 'formik'
-import { initialValues } from './helper.js'
-import { Input } from '../input/Input.jsx'
-import { LogButton } from '../Buttons/Button.jsx'
-import { useEffect } from 'react'
-import { signup, selectStatus, selectError, selectAuth, selectToken } from '../slices/LoginSlice.js'
+import { Formik, Form } from 'formik';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { getRegistrationSchema } from '../Form/schema.js'
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { initialValues } from './helper.js';
+import { Input } from '../input/Input.jsx';
+import { LogButton } from '../Buttons/Button.jsx';
+import {
+  signup, selectStatus, selectError, selectAuth, selectToken,
+} from '../slices/LoginSlice.js';
+import { getRegistrationSchema } from './schema.js';
 
 export const RegForm = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const status = useSelector(selectStatus)
-  const error = useSelector(selectError)
-  const isAuth = useSelector(selectAuth)
-  const token = useSelector(selectToken)
+  const status = useSelector(selectStatus);
+  const error = useSelector(selectError);
+  const isAuth = useSelector(selectAuth);
+  const token = useSelector(selectToken);
 
   useEffect(() => {
-    
     if (status === 'succeeded' && isAuth === true) {
-      navigate('/', { replace: true })
+      navigate('/', { replace: true });
     }
-  }, [status, token])
+  }, [status, token]);
 
   const handleSubmit = async (values, { setSubmitting, setErrors, setFieldTouched }) => {
     try {
-      const result = await dispatch(signup(values)).unwrap()
-      
+      const result = await dispatch(signup(values)).unwrap();
+
       if (signup.rejected.match(result)) {
-        setErrors({ general: result.payload })
+        setErrors({ general: result.payload });
       }
     } catch (err) {
-      setErrors({ general: err })
+      setErrors({ general: err });
       setFieldTouched('general', true, false);
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   return (
-    <Formik 
+    <Formik
       initialValues={initialValues}
       validationSchema={getRegistrationSchema()}
       onSubmit={handleSubmit}
@@ -77,6 +78,5 @@ export const RegForm = () => {
         </Form>
       )}
     </Formik>
-  )
-}
-
+  );
+};

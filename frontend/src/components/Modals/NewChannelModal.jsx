@@ -1,23 +1,22 @@
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { closeAddModal, selectAdding } from '../slices/ModalSlice.js';
 import { addChannel, selectChannels } from '../slices/ChannelsSlice.js';
-import { useTranslation } from 'react-i18next'
 import { getChannelSchema } from '../Form/schema.js';
-import { toast } from 'react-toastify'
-import { Input } from '../input/Input.jsx'
+import { Input } from '../input/Input.jsx';
 
 const NewChannelModal = () => {
   const dispatch = useDispatch();
-  const type = useSelector(selectAdding)
-  const { t } = useTranslation()
-  const channels = useSelector(selectChannels)
+  const type = useSelector(selectAdding);
+  const { t } = useTranslation();
+  const channels = useSelector(selectChannels);
 
   if (!type.isOpen) return null;
 
   const handleClose = () => dispatch(closeAddModal());
-
 
   return (
     <Modal show={type.isOpen} onHide={handleClose} centered>
@@ -29,8 +28,8 @@ const NewChannelModal = () => {
         initialValues={{ name: type.extraData?.name || '' }}
         validationSchema={getChannelSchema(channels)}
         onSubmit={async (values) => {
-          await dispatch(addChannel(values))
-          toast(t('modal.newChanelSuccess'))
+          await dispatch(addChannel(values));
+          toast(t('modal.newChanelSuccess'));
           handleClose();
         }}
       >
@@ -41,8 +40,8 @@ const NewChannelModal = () => {
                 name="name"
                 id="name"
                 placeholder={t('modal.nameChanel')}
-                label={t('modal.nameChanel')}>
-              </Input>
+                label={t('modal.nameChanel')}
+              />
             </Modal.Body>
 
             <Modal.Footer className="d-flex justify-content-between">

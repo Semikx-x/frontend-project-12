@@ -1,54 +1,49 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
-
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 export const fetchJWS = createAsyncThunk(
   'login/fetchJWS',
-   async function(values, { rejectWithValue }) {
+  async (values, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/v1/login', { username: values.userName, password: values.password })
- 
-      const token = response.data.token
+      const response = await axios.post('/api/v1/login', { username: values.userName, password: values.password });
+
+      const { token } = response.data;
       localStorage.setItem('JWT', token);
 
-      return { 
-        token: token,
-        userName: values.userName 
-      }
-      
+      return {
+        token,
+        userName: values.userName,
+      };
     } catch (error) {
-      
       if (error.response) {
-        return rejectWithValue('Неверные имя пользователя или пароль')
+        return rejectWithValue('Неверные имя пользователя или пароль');
       }
-      return rejectWithValue('Ошибка сети')
+      return rejectWithValue('Ошибка сети');
     }
-  }
-)
+  },
+);
 
 export const signup = createAsyncThunk(
   'login/signup',
-   async function(values, { rejectWithValue }) {
+  async (values, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/v1/signup', { username: values.userName, password: values.password })
- 
-      const token = response.data.token
+      const response = await axios.post('/api/v1/signup', { username: values.userName, password: values.password });
+
+      const { token } = response.data;
       localStorage.setItem('JWT', token);
 
-      return { 
-        token: token,
-        userName: values.userName 
-      }
-      
+      return {
+        token,
+        userName: values.userName,
+      };
     } catch (error) {
-      
       if (error.response.status === 409) {
-        return rejectWithValue('Такой пользователь уже существует')
+        return rejectWithValue('Такой пользователь уже существует');
       }
-      return rejectWithValue('Ошибка сети')
+      return rejectWithValue('Ошибка сети');
     }
-  }
-)
+  },
+);
 
 const loginSlice = createSlice({
   name: 'login',
@@ -57,7 +52,7 @@ const loginSlice = createSlice({
     status: null,
     error: null,
     token: null,
-    userName: ''
+    userName: '',
   },
   reducers: {
     restoreAuth: (state) => {
@@ -73,9 +68,9 @@ const loginSlice = createSlice({
       }
     },
     logOut: (state) => {
-      state.token = null
-      state.auth = false
-    }
+      state.token = null;
+      state.auth = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -88,7 +83,7 @@ const loginSlice = createSlice({
         state.auth = true;
         state.token = action.payload.token;
         state.error = null;
-        state.userName = action.payload.userName
+        state.userName = action.payload.userName;
       })
       .addCase(fetchJWS.rejected, (state, action) => {
         state.status = 'failed';
@@ -104,21 +99,21 @@ const loginSlice = createSlice({
         state.auth = true;
         state.token = action.payload.token;
         state.error = null;
-        state.userName = action.payload.userName
+        state.userName = action.payload.userName;
       })
       .addCase(signup.rejected, (state, action) => {
         state.status = 'failed';
         state.auth = false;
         state.error = action.payload || 'Произошла ошибка';
       });
-  }
-})
+  },
+});
 
-export const { restoreAuth, logOut } = loginSlice.actions
-export default loginSlice.reducer
+export const { restoreAuth, logOut } = loginSlice.actions;
+export default loginSlice.reducer;
 
-export const selectStatus = (state) => state.login.status
-export const selectError = (state) => state.login.error
-export const selectAuth = (state) => state.login.auth
-export const selectToken = (state) => state.login.token
-export const selectUser = (state) => state.login.userName
+export const selectStatus = (state) => state.login.status;
+export const selectError = (state) => state.login.error;
+export const selectAuth = (state) => state.login.auth;
+export const selectToken = (state) => state.login.token;
+export const selectUser = (state) => state.login.userName;

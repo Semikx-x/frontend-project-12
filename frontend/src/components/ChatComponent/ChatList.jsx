@@ -1,32 +1,32 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { selectChannels, setActive } from "../slices/ChannelsSlice.js";
+import { useSelector, useDispatch } from 'react-redux';
+import filter from 'leo-profanity';
+import { selectChannels, setActive } from '../slices/ChannelsSlice.js';
 import { openEditModal } from '../slices/ModalSlice.js';
-import filter from 'leo-profanity'
 
+const ChatList = () => {
+  filter.clearList();
+  filter.add(filter.getDictionary('en'));
+  filter.add(filter.getDictionary('ru'));
 
-export const ChatList = () => {
-
-  filter.clearList()
-  filter.add(filter.getDictionary('en'))
-  filter.add(filter.getDictionary('ru'))
-
-  const dispatch = useDispatch()
-  const channels = useSelector(selectChannels)
+  const dispatch = useDispatch();
+  const channels = useSelector(selectChannels);
 
   return (
-    channels.map(chan => (
+    channels.map((chan) => (
       <div key={chan.id} onClick={() => dispatch(setActive(chan))} style={{ padding: '12px 20px', cursor: 'pointer' }}>
         <span role="button">{filter.clean(`# ${chan.name}`)}</span>
         {chan.removable && (
-          <button 
-            variant="outline-light" 
-            size="sm" 
+          <button
+            variant="outline-light"
+            size="sm"
             onClick={() => dispatch(openEditModal({ extraData: chan }))}
           >
             Управление каналом
           </button>
-    )}
+        )}
       </div>
     ))
-  )
-}
+  );
+};
+
+export default ChatList;

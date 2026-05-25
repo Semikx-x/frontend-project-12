@@ -1,11 +1,9 @@
 import { Outlet } from 'react-router-dom';
 import { ToastContainer, Bounce } from 'react-toastify';
-import { useTranslation } from 'react-i18next'
-
+import { useTranslation } from 'react-i18next';
 
 export const Layout = () => {
- 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <div>

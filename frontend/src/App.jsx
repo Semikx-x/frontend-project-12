@@ -1,12 +1,12 @@
-import { Login } from './components/pages/login.jsx'
-import { NotF } from './components/pages/Notfound.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Chats } from './components/pages/chats.jsx';
 import { useEffect } from 'react';
+import { Provider, ErrorBoundary } from '@rollbar/react';
+import { Login } from './components/pages/login.jsx';
+import { NotF } from './components/pages/Notfound.jsx';
+import { Chats } from './components/pages/chats.jsx';
 import { restoreAuth } from './components/slices/LoginSlice.js';
 import { Registration } from './components/pages/registration.jsx';
 import { Layout } from './components/layout.jsx';
-import { Provider, ErrorBoundary } from '@rollbar/react';
 
 const rollbarConfig = {
   accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
@@ -15,30 +15,28 @@ const rollbarConfig = {
   captureUnhandledRejections: true,
 };
 
-function App() {
-  
+const RollbarFallback = () => (
+  <div style={{ padding: '20px', color: 'red' }}>
+    <h2>Oops, something went wrong.</h2>
+    <p>We&apos;ve been notified and are looking into it.</p>
+  </div>
+);
+
+const App = () => {
   useEffect(() => {
-    restoreAuth()
+    restoreAuth();
   }, []);
 
   return (
     <Provider config={rollbarConfig}>
-      <ErrorBoundary
-        fallbackUI={() => (
-          <div style={{ padding: '20px', color: 'red' }}>
-            <h2>Oops, something went wrong.</h2>
-            <p>We've been notified and are looking into it.</p>
-          </div>
-        )}
-      >
+      <ErrorBoundary fallbackUI={<RollbarFallback />}>
         <BrowserRouter>
           <Routes>
             <Route element={<Layout />}>
-              {/* <Route path="/main" element={<Chats />} /> */}
               <Route path="/" element={<Chats />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Registration />} />
-              
+
               <Route path="/*" element={<NotF />} />
             </Route>
 
@@ -46,7 +44,7 @@ function App() {
         </BrowserRouter>
       </ErrorBoundary>
     </Provider>
-  )
-}
+  );
+};
 
-export default App
+export default App;

@@ -1,6 +1,4 @@
-const NotF = () => {
-  return (
-    <div>404</div>
-  )
-}
-export {NotF}
+const NotF = () => (
+  <div>404</div>
+);
+export { NotF };

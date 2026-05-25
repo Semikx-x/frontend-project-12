@@ -1,24 +1,24 @@
 import { Modal, Button } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { closeDeleteModal, selectDelete } from '../slices/ModalSlice.js';
 import { deleteChannel } from '../slices/ChannelsSlice.js';
-import { useTranslation } from 'react-i18next'
-import { toast } from 'react-toastify'
 
 const ModalDelete = () => {
   const dispatch = useDispatch();
-  const type = useSelector(selectDelete)
-  const { t } = useTranslation()
+  const type = useSelector(selectDelete);
+  const { t } = useTranslation();
 
   const handleClose = () => dispatch(closeDeleteModal());
 
-  console.log('deleteLog')
+  console.log('deleteLog');
   if (!type.isOpen) return null;
 
   const handleDelete = async () => {
-      await dispatch(deleteChannel(type.extraData.id));
-      toast(t('modal.deleteChanel'))
-      handleClose();
+    await dispatch(deleteChannel(type.extraData.id));
+    toast(t('modal.deleteChanel'));
+    handleClose();
   };
 
   return (
@@ -29,7 +29,7 @@ const ModalDelete = () => {
 
       <Button variant="danger" onClick={handleDelete}>
         {t('modal.delete')}
-      </Button>    
+      </Button>
     </Modal>
   );
 };
