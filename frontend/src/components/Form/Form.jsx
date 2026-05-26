@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import initialValues from './helper.js';
-import { Input } from '../input/Input.jsx';
+import Input from '../input/Input.jsx';
 import LogButton from '../Buttons/Button.jsx';
 import { fetchJWS } from '../slices/LoginSlice.js';
 

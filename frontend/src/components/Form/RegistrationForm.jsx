@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import initialValues from './helper.js';
-import { Input } from '../input/Input.jsx';
+import Input from '../input/Input.jsx';
 import LogButton from '../Buttons/Button.jsx';
 import {
   signup, selectStatus, selectAuth, selectToken,
@@ -24,7 +24,7 @@ const RegForm = () => {
     if (status === 'succeeded' && isAuth === true) {
       navigate('/', { replace: true });
     }
-  }, [status, token]);
+  }, [isAuth, navigate, status, token]);
 
   const handleSubmit = async (values, { setSubmitting, setErrors, setFieldTouched }) => {
     try {

@@ -8,7 +8,7 @@ import {
 } from '../slices/ModalSlice.js';
 import { renameChannel, selectChannels, selectActive } from '../slices/ChannelsSlice.js';
 import { getChannelSchema } from '../Form/schema.js';
-import { Input } from '../input/Input.jsx';
+import Input from '../input/Input.jsx';
 
 const EditChannelModal = () => {
   const dispatch = useDispatch();

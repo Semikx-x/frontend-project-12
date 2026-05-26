@@ -43,7 +43,13 @@ const modalsSlice = createSlice({
 });
 
 export const {
-  openEditModal, openAddModal, openDeleteModal, closeAddModal, closeDeleteModal, closeEditModal, turnOnEdit,
+  openEditModal,
+  openAddModal,
+  openDeleteModal,
+  closeAddModal,
+  closeDeleteModal,
+  closeEditModal,
+  turnOnEdit,
 } = modalsSlice.actions;
 
 export default modalsSlice.reducer;

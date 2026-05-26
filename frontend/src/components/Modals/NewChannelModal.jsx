@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { closeAddModal, selectAdding } from '../slices/ModalSlice.js';
 import { addChannel, selectChannels } from '../slices/ChannelsSlice.js';
 import { getChannelSchema } from '../Form/schema.js';
-import { Input } from '../input/Input.jsx';
+import Input from '../input/Input.jsx';
 
 const NewChannelModal = () => {
   const dispatch = useDispatch();
