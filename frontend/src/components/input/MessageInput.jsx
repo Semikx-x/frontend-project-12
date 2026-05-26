@@ -4,7 +4,7 @@ import { selectActive } from '../slices/ChannelsSlice.js';
 import { selectUser } from '../slices/LoginSlice.js';
 import { addMessage } from '../slices/MessagesSlice.js';
 
-export const MessageInput = () => {
+const MessageInput = () => {
   const activeChat = useSelector(selectActive);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
@@ -84,3 +84,5 @@ export const MessageInput = () => {
     </Formik>
   );
 };
+
+export default MessageInput;

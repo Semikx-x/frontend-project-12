@@ -10,8 +10,8 @@ import {
 } from '../slices/ChannelsSlice.js';
 import { selectToken, logOut, selectAuth } from '../slices/LoginSlice.js';
 import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSlice.js';
-import { MessageInput } from '../input/MessageInput.jsx';
-import { ChatList } from '../ChatComponent/ChatList.jsx';
+import MessageInput from '../input/MessageInput.jsx';
+import ChatList from '../ChatComponent/ChatList.jsx';
 import { openAddModal } from '../slices/ModalSlice.js';
 import NewChannelModal from '../Modals/NewChannelModal.jsx';
 import EditChannelModal from '../Modals/ModalEditChannel.jsx';
@@ -134,7 +134,7 @@ const Chats = () => {
           {t('chats.channels')}
         </div>
         <div style={{ flex: 1, overflowY: 'auto', padding: '10px' }}>
-          <button size="sm" onClick={() => dispatch(openAddModal({ extraData: null }))}>
+          <button type="button" size="sm" onClick={() => dispatch(openAddModal({ extraData: null }))}>
             {t('chats.create')}
           </button>
           <ChatList />
@@ -146,7 +146,7 @@ const Chats = () => {
           <div>
             {activeChat?.name ?? ''}
           </div>
-          <button onClick={handleOut} className="me-2 ms-auto">Выйти</button>
+          <button type="button" onClick={handleOut} className="me-2 ms-auto">Выйти</button>
         </header>
 
         <div style={styles.messagesList}>
@@ -169,4 +169,4 @@ const Chats = () => {
     </div>
   );
 };
-export { Chats };
+export default Chats;

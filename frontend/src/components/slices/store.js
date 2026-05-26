@@ -4,7 +4,7 @@ import channelReducer from './ChannelsSlice.js';
 import messagesReducer from './MessagesSlice.js';
 import modalsReducer from './ModalSlice.js';
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     login: loginReducer,
     channels: channelReducer,
@@ -12,3 +12,5 @@ export const store = configureStore({
     modals: modalsReducer,
   },
 });
+
+export default store;

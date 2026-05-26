@@ -2,12 +2,12 @@ import { Formik, Form } from 'formik';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { initialValues } from './helper.js';
+import initialValues from './helper.js';
 import { Input } from '../input/Input.jsx';
-import { LogButton } from '../Buttons/Button.jsx';
+import LogButton from '../Buttons/Button.jsx';
 import { fetchJWS } from '../slices/LoginSlice.js';
 
-export const LoginForm = () => {
+const LoginForm = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -58,3 +58,5 @@ export const LoginForm = () => {
     </Formik>
   );
 };
+
+export default LoginForm;

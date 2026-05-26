@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { selectAuth, selectToken } from '../slices/LoginSlice.js';
-import { LoginForm } from '../Form/Form.jsx';
+import { selectAuth, selectStatus, selectToken } from '../slices/LoginSlice.js';
+import LoginForm from '../Form/Form.jsx';
 
 const Login = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-
+  const status = useSelector(selectStatus);
   const isAuth = useSelector(selectAuth);
   const token = useSelector(selectToken);
 
@@ -16,7 +16,7 @@ const Login = () => {
     if (isAuth === true) {
       navigate('/', { replace: true });
     }
-  }, [status, token]);
+  }, [isAuth, navigate, status, token]);
 
   return (
     <div className="container-fluid vh-100 d-flex justify-content-center align-items-center">
@@ -41,4 +41,4 @@ const Login = () => {
   );
 };
 
-export { Login };
+export default Login;

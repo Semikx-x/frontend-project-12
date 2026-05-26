@@ -1,6 +1,13 @@
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+function getError(error) {
+  if (!error.response.status) {
+    return 'Ошибка сети';
+  }
+  return 'Ошибка при загрузке данных';
+}
+
 export const fetchChannels = createAsyncThunk(
   'channels/fetchChannels',
   async (token1, { rejectWithValue }) => {
@@ -153,13 +160,6 @@ const channelsSlice = createSlice({
       });
   },
 });
-
-function getError(error) {
-  if (!error.response.status) {
-    return 'Ошибка сети';
-  }
-  return 'Ошибка при загрузке данных';
-}
 
 export default channelsSlice.reducer;
 

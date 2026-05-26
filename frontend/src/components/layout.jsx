@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { ToastContainer, Bounce } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 
-export const Layout = () => {
+const Layout = () => {
   const { t } = useTranslation();
 
   return (
@@ -30,3 +30,5 @@ export const Layout = () => {
     </div>
   );
 };
+
+export default Layout;

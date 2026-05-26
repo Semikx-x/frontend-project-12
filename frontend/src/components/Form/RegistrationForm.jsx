@@ -3,21 +3,20 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { initialValues } from './helper.js';
+import initialValues from './helper.js';
 import { Input } from '../input/Input.jsx';
-import { LogButton } from '../Buttons/Button.jsx';
+import LogButton from '../Buttons/Button.jsx';
 import {
-  signup, selectStatus, selectError, selectAuth, selectToken,
+  signup, selectStatus, selectAuth, selectToken,
 } from '../slices/LoginSlice.js';
 import { getRegistrationSchema } from './schema.js';
 
-export const RegForm = () => {
+const RegForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const status = useSelector(selectStatus);
-  const error = useSelector(selectError);
   const isAuth = useSelector(selectAuth);
   const token = useSelector(selectToken);
 
@@ -80,3 +79,5 @@ export const RegForm = () => {
     </Formik>
   );
 };
+
+export default RegForm;

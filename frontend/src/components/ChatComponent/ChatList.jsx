@@ -13,11 +13,18 @@ const ChatList = () => {
 
   return (
     channels.map((chan) => (
-      <div key={chan.id} onClick={() => dispatch(setActive(chan))} style={{ padding: '12px 20px', cursor: 'pointer' }}>
-        <span role="button">{filter.clean(`# ${chan.name}`)}</span>
+      <div
+        key={chan.id}
+        onClick={() => dispatch(setActive(chan))}
+        style={{ padding: '12px 20px', cursor: 'pointer' }}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') dispatch(setActive(chan)); }}
+        tabIndex={0}
+        role="button"
+      >
+        <span>{filter.clean(`# ${chan.name}`)}</span>
         {chan.removable && (
           <button
-            variant="outline-light"
+            type="button"
             size="sm"
             onClick={() => dispatch(openEditModal({ extraData: chan }))}
           >
