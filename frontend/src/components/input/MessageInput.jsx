@@ -1,13 +1,13 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { Formik, Form, Field } from 'formik';
-import { selectActive } from '../slices/ChannelsSlice.js';
-import { selectUser } from '../slices/LoginSlice.js';
-import { addMessage } from '../slices/MessagesSlice.js';
+import { useSelector, useDispatch } from 'react-redux'
+import { Formik, Form, Field } from 'formik'
+import { selectActive } from '../slices/ChannelsSlice.js'
+import { selectUser } from '../slices/LoginSlice.js'
+import { addMessage } from '../slices/MessagesSlice.js'
 
 const MessageInput = () => {
-  const activeChat = useSelector(selectActive);
-  const user = useSelector(selectUser);
-  const dispatch = useDispatch();
+  const activeChat = useSelector(selectActive)
+  const user = useSelector(selectUser)
+  const dispatch = useDispatch()
 
   const styles = {
     inputWrapper: {
@@ -39,21 +39,22 @@ const MessageInput = () => {
       cursor: 'pointer',
       fontWeight: '600',
     },
-  };
+  }
 
   return (
     <Formik
       initialValues={{ body: '' }}
       onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
-        const message = { body: values.body, channelId: activeChat.id, userName: user };
-        const result = await dispatch(addMessage(message));
+        const message = { body: values.body, channelId: activeChat.id, userName: user }
+        const result = await dispatch(addMessage(message))
 
         if (addMessage.fulfilled.match(result)) {
-          resetForm();
-        } else {
-          setErrors({ general: result.payload });
+          resetForm()
         }
-        setSubmitting(false);
+        else {
+          setErrors({ general: result.payload })
+        }
+        setSubmitting(false)
       }}
     >
       {({
@@ -82,7 +83,7 @@ const MessageInput = () => {
         </footer>
       )}
     </Formik>
-  );
-};
+  )
+}
 
-export default MessageInput;
+export default MessageInput

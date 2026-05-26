@@ -1,49 +1,51 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 export const fetchJWS = createAsyncThunk(
   'login/fetchJWS',
   async (values, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/v1/login', { username: values.userName, password: values.password });
+      const response = await axios.post('/api/v1/login', { username: values.userName, password: values.password })
 
-      const { token } = response.data;
-      localStorage.setItem('JWT', token);
+      const { token } = response.data
+      localStorage.setItem('JWT', token)
 
       return {
         token,
         userName: values.userName,
-      };
-    } catch (error) {
-      if (error.response) {
-        return rejectWithValue('Неверные имя пользователя или пароль');
       }
-      return rejectWithValue('Ошибка сети');
+    }
+    catch (error) {
+      if (error.response) {
+        return rejectWithValue('Неверные имя пользователя или пароль')
+      }
+      return rejectWithValue('Ошибка сети')
     }
   },
-);
+)
 
 export const signup = createAsyncThunk(
   'login/signup',
   async (values, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/v1/signup', { username: values.userName, password: values.password });
+      const response = await axios.post('/api/v1/signup', { username: values.userName, password: values.password })
 
-      const { token } = response.data;
-      localStorage.setItem('JWT', token);
+      const { token } = response.data
+      localStorage.setItem('JWT', token)
 
       return {
         token,
         userName: values.userName,
-      };
-    } catch (error) {
-      if (error.response.status === 409) {
-        return rejectWithValue('Такой пользователь уже существует');
       }
-      return rejectWithValue('Ошибка сети');
+    }
+    catch (error) {
+      if (error.response.status === 409) {
+        return rejectWithValue('Такой пользователь уже существует')
+      }
+      return rejectWithValue('Ошибка сети')
     }
   },
-);
+)
 
 const loginSlice = createSlice({
   name: 'login',
@@ -56,64 +58,59 @@ const loginSlice = createSlice({
   },
   reducers: {
     restoreAuth: (state) => {
-      const token = localStorage.getItem('JWT');
+      const token = localStorage.getItem('JWT')
       if (token) {
-        try {
-          state.token = token;
-          state.auth = true;
-        } catch (e) {
-          state.token = null;
-          state.auth = false;
-        }
+        state.token = token
+        state.auth = true
       }
     },
     logOut: (state) => {
-      state.token = null;
-      state.auth = false;
+      state.token = null
+      state.auth = false
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchJWS.pending, (state) => {
-        state.status = 'loading';
-        state.error = null;
+        state.status = 'loading'
+        state.error = null
       })
       .addCase(fetchJWS.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.auth = true;
-        state.token = action.payload.token;
-        state.error = null;
-        state.userName = action.payload.userName;
+        state.status = 'succeeded'
+        state.auth = true
+        state.token = action.payload.token
+        state.error = null
+        state.userName = action.payload.userName
       })
       .addCase(fetchJWS.rejected, (state, action) => {
-        state.status = 'failed';
-        state.auth = false;
-        state.error = action.payload || 'Произошла ошибка';
+        state.status = 'failed'
+        state.auth = false
+        state.error = action.payload || 'Произошла ошибка'
       })
       .addCase(signup.pending, (state) => {
-        state.status = 'loading';
-        state.error = null;
+        state.status = 'loading'
+        state.error = null
       })
       .addCase(signup.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.auth = true;
-        state.token = action.payload.token;
-        state.error = null;
-        state.userName = action.payload.userName;
+        state.status = 'succeeded'
+        state.auth = true
+        state.token = action.payload.token
+        state.error = null
+        state.userName = action.payload.userName
       })
       .addCase(signup.rejected, (state, action) => {
-        state.status = 'failed';
-        state.auth = false;
-        state.error = action.payload || 'Произошла ошибка';
-      });
+        state.status = 'failed'
+        state.auth = false
+        state.error = action.payload || 'Произошла ошибка'
+      })
   },
-});
+})
 
-export const { restoreAuth, logOut } = loginSlice.actions;
-export default loginSlice.reducer;
+export const { restoreAuth, logOut } = loginSlice.actions
+export default loginSlice.reducer
 
-export const selectStatus = (state) => state.login.status;
-export const selectError = (state) => state.login.error;
-export const selectAuth = (state) => state.login.auth;
-export const selectToken = (state) => state.login.token;
-export const selectUser = (state) => state.login.userName;
+export const selectStatus = state => state.login.status
+export const selectError = state => state.login.error
+export const selectAuth = state => state.login.auth
+export const selectToken = state => state.login.token
+export const selectUser = state => state.login.userName

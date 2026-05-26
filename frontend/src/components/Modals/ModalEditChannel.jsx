@@ -1,32 +1,32 @@
-import { Modal, Button, Form } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { Formik } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
+import { Modal, Button, Form } from 'react-bootstrap'
+import { useSelector, useDispatch } from 'react-redux'
+import { Formik } from 'formik'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 import {
   turnOnEdit, selectIsEdit, openDeleteModal, closeEditModal, selectEditing,
-} from '../slices/ModalSlice.js';
-import { renameChannel, selectChannels, selectActive } from '../slices/ChannelsSlice.js';
-import { getChannelSchema } from '../Form/schema.js';
-import Input from '../input/Input.jsx';
+} from '../slices/ModalSlice.js'
+import { renameChannel, selectChannels, selectActive } from '../slices/ChannelsSlice.js'
+import { getChannelSchema } from '../Form/schema.js'
+import Input from '../input/Input.jsx'
 
 const EditChannelModal = () => {
-  const dispatch = useDispatch();
-  const type = useSelector(selectEditing);
-  const { t } = useTranslation();
-  const channels = useSelector(selectChannels);
-  const isEdit = useSelector(selectIsEdit);
-  const chat = useSelector(selectActive);
+  const dispatch = useDispatch()
+  const type = useSelector(selectEditing)
+  const { t } = useTranslation()
+  const channels = useSelector(selectChannels)
+  const isEdit = useSelector(selectIsEdit)
+  const chat = useSelector(selectActive)
 
-  if (!type.isOpen) return null;
+  if (!type.isOpen) return null
 
-  const handleClose = () => dispatch(closeEditModal());
+  const handleClose = () => dispatch(closeEditModal())
 
-  const turn = () => dispatch(turnOnEdit());
+  const turn = () => dispatch(turnOnEdit())
 
   const openDelModal = async () => {
-    dispatch(openDeleteModal({ extraData: chat }));
-  };
+    dispatch(openDeleteModal({ extraData: chat }))
+  }
 
   return (
     <Modal show={type.isOpen} onHide={handleClose} centered>
@@ -38,9 +38,9 @@ const EditChannelModal = () => {
         initialValues={{ name: type.extraData?.name || '' }}
         validationSchema={getChannelSchema(channels)}
         onSubmit={async (values) => {
-          await dispatch(renameChannel({ id: type.extraData.id, name: values.name }));
-          toast(t('modal.editChanelSuccess'));
-          handleClose();
+          await dispatch(renameChannel({ id: type.extraData.id, name: values.name }))
+          toast(t('modal.editChanelSuccess'))
+          handleClose()
         }}
       >
         {({ handleSubmit, isSubmitting }) => (
@@ -76,7 +76,7 @@ const EditChannelModal = () => {
         )}
       </Formik>
     </Modal>
-  );
-};
+  )
+}
 
-export default EditChannelModal;
+export default EditChannelModal

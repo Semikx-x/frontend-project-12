@@ -1,4 +1,4 @@
-import RegForm from '../Form/RegistrationForm.jsx';
+import RegForm from '../Form/RegistrationForm.jsx'
 
 const Registration = () => (
   <div className="container mt-5">
@@ -8,6 +8,6 @@ const Registration = () => (
       </div>
     </div>
   </div>
-);
+)
 
-export default Registration;
+export default Registration

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 
 const modalsSlice = createSlice({
   name: 'modals',
@@ -10,37 +10,37 @@ const modalsSlice = createSlice({
   },
   reducers: {
     openEditModal: (state, action) => {
-      state.editing.isOpen = true;
-      state.editing.extraData = action.payload.extraData;
+      state.editing.isOpen = true
+      state.editing.extraData = action.payload.extraData
     },
     openDeleteModal: (state, action) => {
-      state.delete.isOpen = true;
-      state.delete.extraData = action.payload.extraData;
+      state.delete.isOpen = true
+      state.delete.extraData = action.payload.extraData
     },
     openAddModal: (state, action) => {
-      state.adding.isOpen = true;
-      state.adding.extraData = action.payload.extraData;
+      state.adding.isOpen = true
+      state.adding.extraData = action.payload.extraData
     },
     closeEditModal: (state) => {
-      state.editing.isOpen = false;
-      state.editing.extraData = null;
+      state.editing.isOpen = false
+      state.editing.extraData = null
     },
     closeDeleteModal: (state) => {
-      state.delete.isOpen = false;
-      state.delete.extraData = null;
-      state.editing.isOpen = false;
-      state.editing.extraData = null;
+      state.delete.isOpen = false
+      state.delete.extraData = null
+      state.editing.isOpen = false
+      state.editing.extraData = null
     },
     closeAddModal: (state) => {
-      state.adding.isOpen = false;
-      state.adding.extraData = null;
+      state.adding.isOpen = false
+      state.adding.extraData = null
     },
     turnOnEdit: (state) => {
-      state.isEdit = !state.isEdit;
-      console.log(state.isEdit);
+      state.isEdit = !state.isEdit
+      console.log(state.isEdit)
     },
   },
-});
+})
 
 export const {
   openEditModal,
@@ -50,11 +50,11 @@ export const {
   closeDeleteModal,
   closeEditModal,
   turnOnEdit,
-} = modalsSlice.actions;
+} = modalsSlice.actions
 
-export default modalsSlice.reducer;
+export default modalsSlice.reducer
 
-export const selectEditing = (state) => state.modals.editing;
-export const selectDelete = (state) => state.modals.delete;
-export const selectAdding = (state) => state.modals.adding;
-export const selectIsEdit = (state) => state.modals.isEdit;
+export const selectEditing = state => state.modals.editing
+export const selectDelete = state => state.modals.delete
+export const selectAdding = state => state.modals.adding
+export const selectIsEdit = state => state.modals.isEdit

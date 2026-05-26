@@ -1,87 +1,87 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { io } from 'socket.io-client';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import filter from 'leo-profanity';
+import { useSelector, useDispatch } from 'react-redux'
+import { useEffect } from 'react'
+import { io } from 'socket.io-client'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import filter from 'leo-profanity'
 import {
   fetchChannels, setActive, selectActive, newChannel, removeChannel,
-} from '../slices/ChannelsSlice.js';
-import { selectToken, logOut, selectAuth } from '../slices/LoginSlice.js';
-import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSlice.js';
-import MessageInput from '../input/MessageInput.jsx';
-import ChatList from '../ChatComponent/ChatList.jsx';
-import { openAddModal } from '../slices/ModalSlice.js';
-import NewChannelModal from '../Modals/NewChannelModal.jsx';
-import EditChannelModal from '../Modals/ModalEditChannel.jsx';
-import ModalDelete from '../Modals/ModalDelete.jsx';
+} from '../slices/ChannelsSlice.js'
+import { selectToken, logOut, selectAuth } from '../slices/LoginSlice.js'
+import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSlice.js'
+import MessageInput from '../input/MessageInput.jsx'
+import ChatList from '../ChatComponent/ChatList.jsx'
+import { openAddModal } from '../slices/ModalSlice.js'
+import NewChannelModal from '../Modals/NewChannelModal.jsx'
+import EditChannelModal from '../Modals/ModalEditChannel.jsx'
+import ModalDelete from '../Modals/ModalDelete.jsx'
 
 const Chats = () => {
-  const navigate = useNavigate();
-  const token = useSelector(selectToken);
-  const activeChat = useSelector(selectActive);
-  const dispatch = useDispatch();
-  const messages = useSelector(selectMessages);
-  const { t } = useTranslation();
-  filter.clearList();
-  filter.add(filter.getDictionary('en'));
-  filter.add(filter.getDictionary('ru'));
-  const isAuth = useSelector(selectAuth);
+  const navigate = useNavigate()
+  const token = useSelector(selectToken)
+  const activeChat = useSelector(selectActive)
+  const dispatch = useDispatch()
+  const messages = useSelector(selectMessages)
+  const { t } = useTranslation()
+  filter.clearList()
+  filter.add(filter.getDictionary('en'))
+  filter.add(filter.getDictionary('ru'))
+  const isAuth = useSelector(selectAuth)
 
   useEffect(() => {
     if (!isAuth) {
-      navigate('/login', { replace: true });
+      navigate('/login', { replace: true })
     }
-  });
+  })
 
   useEffect(() => {
-    const socket = io();
+    const socket = io()
 
     socket.on('newMessage', (payload) => {
-      console.log('Новое сообщение через сокет:', payload);
-      dispatch(newMessage(payload));
-    });
+      console.log('Новое сообщение через сокет:', payload)
+      dispatch(newMessage(payload))
+    })
     socket.on('newChannel', (payload) => {
-      console.log('Создан новый канал:', payload);
-      dispatch(newChannel(payload));
-    });
+      console.log('Создан новый канал:', payload)
+      dispatch(newChannel(payload))
+    })
     socket.on('removeChannel', (payload) => {
-      console.log('Канал удален, ID:', payload.id);
-      dispatch(removeChannel(payload.id));
-    });
+      console.log('Канал удален, ID:', payload.id)
+      dispatch(removeChannel(payload.id))
+    })
     socket.on('connect_error', () => {
-      toast('Нет сети');
-    });
+      toast('Нет сети')
+    })
     return () => {
-      socket.off('newMessage');
-      socket.off('newChannel');
-      socket.off('removeChannel');
-      socket.disconnect();
-    };
-  }, [dispatch]);
+      socket.off('newMessage')
+      socket.off('newChannel')
+      socket.off('removeChannel')
+      socket.disconnect()
+    }
+  }, [dispatch])
 
   useEffect(() => {
     const loadData = async () => {
-      const result = await dispatch(fetchChannels(token)).unwrap();
-      dispatch(setActive(result[0]));
+      const result = await dispatch(fetchChannels(token)).unwrap()
+      dispatch(setActive(result[0]))
 
       if (fetchChannels.rejected.match(result)) {
-        toast(result.payload);
+        toast(result.payload)
       }
-    };
-    loadData();
-  }, [dispatch, token]);
+    }
+    loadData()
+  }, [dispatch, token])
 
   useEffect(() => {
-    dispatch(fetchMessages(token));
-  }, [activeChat, dispatch, token]);
+    dispatch(fetchMessages(token))
+  }, [activeChat, dispatch, token])
 
   const handleOut = async () => {
-    await dispatch(logOut()).unwrap;
-    localStorage.removeItem('JWT');
-    navigate('/login', { replace: true });
-  };
+    await dispatch(logOut()).unwrap
+    localStorage.removeItem('JWT')
+    navigate('/login', { replace: true })
+  }
 
   const styles = {
     wrapper: {
@@ -122,7 +122,7 @@ const Chats = () => {
       flexDirection: 'column',
       gap: '10px',
     },
-  };
+  }
 
   return (
     <div style={styles.wrapper}>
@@ -151,8 +151,8 @@ const Chats = () => {
 
         <div style={styles.messagesList}>
           {messages
-            .filter((message) => message.channelId === activeChat.id)
-            .map((message) => (
+            .filter(message => message.channelId === activeChat.id)
+            .map(message => (
               <div
                 key={message.id}
                 style={{
@@ -167,6 +167,6 @@ const Chats = () => {
         <MessageInput />
       </main>
     </div>
-  );
-};
-export default Chats;
+  )
+}
+export default Chats

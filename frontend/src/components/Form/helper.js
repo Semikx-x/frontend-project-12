@@ -1,6 +1,6 @@
 const initialValues = {
   userName: '',
   password: '',
-};
+}
 
-export default initialValues;
+export default initialValues
