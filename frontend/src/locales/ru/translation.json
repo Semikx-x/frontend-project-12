@@ -38,5 +38,8 @@
    },
    "menu": {
       "chat": "Hexlet Chat"
+   },
+   "NotF": {
+      "404": "404"
    }
 }

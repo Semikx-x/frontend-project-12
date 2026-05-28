@@ -83,88 +83,58 @@ const Chats = () => {
     navigate('/login', { replace: true })
   }
 
-  const styles = {
-    wrapper: {
-      display: 'flex',
-      height: '100vh',
-      width: '100vw',
-      overflow: 'hidden',
-      fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
-    },
-    sidebar: {
-      width: '260px',
-      backgroundColor: '#2c3e50',
-      color: 'white',
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    chatContainer: {
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      backgroundColor: '#f5f5f5',
-      position: 'relative',
-    },
-    header: {
-      height: '60px',
-      padding: '0 20px',
-      backgroundColor: 'white',
-      borderBottom: '1px solid #ddd',
-      display: 'flex',
-      alignItems: 'center',
-      fontWeight: 'bold',
-    },
-    messagesList: {
-      flex: 1,
-      overflowY: 'auto',
-      padding: '20px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '10px',
-    },
-  }
-
   return (
-    <div style={styles.wrapper}>
+    <div className="d-flex vh-100 vw-100 overflow-hidden bg-light">
       <NewChannelModal />
       <EditChannelModal />
       <ModalDelete />
-      <aside style={styles.sidebar}>
-        <div style={{ padding: '20px', fontSize: '1.2rem', borderBottom: '1px solid #3e4f5f' }}>
+      <aside className="d-flex flex-column text-white bg-dark border-end" style={{ width: '260px' }}>
+        <div className="p-4 border-bottom border-secondary lh-sm fw-bold">
           {t('chats.channels')}
         </div>
-        <div style={{ flex: 1, overflowY: 'auto', padding: '10px' }}>
-          <button type="button" size="sm" onClick={() => dispatch(openAddModal({ extraData: null }))}>
+        <div className="flex-grow-1 overflow-auto p-3">
+          <button
+            type="button"
+            className="btn btn-primary w-100 mb-3"
+            onClick={() => dispatch(openAddModal({ extraData: null }))}
+          >
             {t('chats.create')}
           </button>
           <ChatList />
         </div>
       </aside>
 
-      <main style={styles.chatContainer}>
-        <header style={styles.header}>
-          <div>
+      <main className="d-flex flex-column flex-grow-1 bg-light position-relative">
+        <header className="navbar navbar-expand navbar-light bg-white border-bottom px-4 shadow-sm" style={{ height: '60px' }}>
+          <div className="navbar-brand fw-bold m-0 text-truncate" style={{ maxWidth: '70%' }}>
             {activeChat?.name ?? ''}
           </div>
-          <button type="button" onClick={handleOut} className="me-2 ms-auto">Выйти</button>
+          <button
+            type="button"
+            onClick={handleOut}
+            className="btn btn-outline-danger btn-sm ms-auto"
+          >
+            Выйти
+          </button>
         </header>
 
-        <div style={styles.messagesList}>
+        <div className="flex-grow-1 overflow-auto p-4 d-flex flex-column gap-3">
           {messages
-            .filter(message => message.channelId === activeChat.id)
+            .filter(message => message.channelId === activeChat?.id)
             .map(message => (
               <div
                 key={message.id}
-                style={{
-                  background: 'white', padding: '10px', borderRadius: '8px', width: 'fit-content',
-                }}
+                className="bg-white p-3 rounded shadow-sm border border-light align-self-start"
+                style={{ maxWidth: '75%' }}
               >
-                <div>{message.userName}</div>
-                {filter.clean(message.body)}
+                <div className="fw-bold small text-muted mb-1">{message.userName}</div>
+                <div className="text-break">{filter.clean(message.body)}</div>
               </div>
             ))}
         </div>
-        <MessageInput />
+        <div className="p-3 bg-white border-top">
+          <MessageInput />
+        </div>
       </main>
     </div>
   )

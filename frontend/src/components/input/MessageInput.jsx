@@ -9,62 +9,36 @@ const MessageInput = () => {
   const user = useSelector(selectUser)
   const dispatch = useDispatch()
 
-  const styles = {
-    inputWrapper: {
-      padding: '20px',
-      backgroundColor: 'white',
-      borderTop: '1px solid #ddd',
-    },
-    form: {
-      display: 'flex',
-      gap: '10px',
-      maxWidth: '1000px',
-      margin: '0 auto',
-      width: '100%',
-    },
-    input: {
-      flex: 1,
-      padding: '12px 15px',
-      borderRadius: '8px',
-      border: '1px solid #ccc',
-      outline: 'none',
-      fontSize: '16px',
-    },
-    button: {
-      padding: '10px 25px',
-      backgroundColor: '#007bff',
-      color: 'white',
-      border: 'none',
-      borderRadius: '8px',
-      cursor: 'pointer',
-      fontWeight: '600',
-    },
+  const renderMessages = async (values, { resetForm, setSubmitting, setErrors }) => {
+    const message = { body: values.body, channelId: activeChat.id, userName: user }
+    const result = await dispatch(addMessage(message)).unwrap()
+
+    if (addMessage.fulfilled.match(result)) {
+      resetForm()
+    }
+    else {
+      setErrors({ general: result.payload })
+    }
+    setSubmitting(false)
   }
 
   return (
     <Formik
       initialValues={{ body: '' }}
-      onSubmit={async (values, { resetForm, setSubmitting, setErrors }) => {
-        const message = { body: values.body, channelId: activeChat.id, userName: user }
-        const result = await dispatch(addMessage(message))
-
-        if (addMessage.fulfilled.match(result)) {
-          resetForm()
-        }
-        else {
-          setErrors({ general: result.payload })
-        }
-        setSubmitting(false)
-      }}
+      onSubmit={renderMessages}
     >
       {({
         values, handleChange, handleSubmit, isSubmitting,
       }) => (
-        <footer style={styles.inputWrapper}>
-          <Form style={styles.form} onSubmit={handleSubmit}>
+        <footer className="p-3 bg-white border-top">
+          <Form
+            className="input-group mx-auto"
+            style={{ maxWidth: '1000px' }}
+            onSubmit={handleSubmit}
+          >
             <Field
               name="body"
-              style={styles.input}
+              className="form-control" // Стандартный инпут Bootstrap
               type="text"
               aria-label="Новое сообщение"
               placeholder="Написать сообщение"
@@ -73,7 +47,7 @@ const MessageInput = () => {
               disabled={isSubmitting}
             />
             <button
-              style={styles.button}
+              className="btn btn-primary px-4 fw-semibold"
               type="submit"
               disabled={isSubmitting || !values.body.trim()}
             >
