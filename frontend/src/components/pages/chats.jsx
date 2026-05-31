@@ -8,7 +8,7 @@ import filter from 'leo-profanity'
 import {
   fetchChannels, setActive, selectActive, newChannel, removeChannel,
 } from '../slices/ChannelsSlice.js'
-import { selectToken, logOut, selectAuth } from '../slices/LoginSlice.js'
+import { selectToken, logOut, selectAuth, restoreAuth } from '../slices/LoginSlice.js'
 import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSlice.js'
 import MessageInput from '../input/MessageInput.jsx'
 import ChatList from '../ChatComponent/ChatList.jsx'
@@ -33,6 +33,7 @@ const Chats = () => {
     if (!isAuth) {
       navigate('/login', { replace: true })
     }
+    dispatch(restoreAuth())
   })
 
   useEffect(() => {
@@ -118,7 +119,7 @@ const Chats = () => {
           </button>
         </header>
 
-        <div className="flex-grow-1 overflow-auto p-4 d-flex flex-column gap-3">
+        <div className="flex-grow-1 p-4 d-flex flex-column gap-3 overflow-auto">
           {messages
             .filter(message => message.channelId === activeChat?.id)
             .map(message => (

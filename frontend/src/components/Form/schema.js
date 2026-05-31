@@ -15,11 +15,6 @@ export const getChannelSchema = (channels) => {
       .notOneOf(channelsNames, 'Канал с таким названием уже существует!')
       .min(3, 'От 3 до 20 символов')
       .max(20, 'От 3 до 20 символов'),
-    // .test(
-    //   'BadWords',
-    //   'Матюки это плохо)',
-    //   (value) => !filter.check(value)
-    // )
   })
 }
 

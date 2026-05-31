@@ -12,6 +12,11 @@ const LoginForm = () => {
   const { t } = useTranslation()
 
   const handleSubmit = async (values, { setSubmitting, setErrors, setFieldTouched }) => {
+    if (Object.values(values).every(value => !value.trim())) {
+      setErrors({ general: t('login.empty') })
+      setFieldTouched('general', true, false)
+      return
+    }
     try {
       const result = await dispatch(fetchJWS(values)).unwrap()
 
@@ -54,7 +59,9 @@ const LoginForm = () => {
               {errors.general}
             </div>
           )}
-          <LogButton>{isSubmitting ? t('login.ing') : t('login.butLog')}</LogButton>
+          <div className="d-flex justify-content-center mt-4">
+            <LogButton>{isSubmitting ? t('login.ing') : t('login.butLog')}</LogButton>
+          </div>
         </Form>
       )}
     </Formik>
