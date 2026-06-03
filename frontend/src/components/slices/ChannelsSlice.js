@@ -95,7 +95,7 @@ const channelsSlice = createSlice({
       state.activeChat = action.payload
     },
     newChannel: (state, action) => {
-      state.chats.unshift(action.payload)
+      state.chats.push(action.payload)
     },
     removeChannel: (state, action) => {
       state.chats = state.chats.filter(chat => chat.id !== action.payload)
