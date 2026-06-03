@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { selectAuth, selectStatus, selectToken } from '../slices/LoginSlice.js'
+import { selectAuth, selectStatus } from '../slices/LoginSlice.js'
 import LoginForm from '../Form/Form.jsx'
 
 const Login = () => {
@@ -10,7 +10,7 @@ const Login = () => {
   const { t } = useTranslation()
   const status = useSelector(selectStatus)
   const isAuth = useSelector(selectAuth)
-  const token = useSelector(selectToken)
+  const token = localStorage.getItem('JWT')
 
   useEffect(() => {
     if (isAuth === true) {

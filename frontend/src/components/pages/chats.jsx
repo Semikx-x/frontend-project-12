@@ -8,7 +8,7 @@ import filter from 'leo-profanity'
 import {
   fetchChannels, setActive, selectActive, newChannel, removeChannel,
 } from '../slices/ChannelsSlice.js'
-import { selectToken, logOut, selectAuth, restoreAuth } from '../slices/LoginSlice.js'
+import { logOut, selectAuth, restoreAuth } from '../slices/LoginSlice.js'
 import { fetchMessages, selectMessages, newMessage } from '../slices/MessagesSlice.js'
 import MessageInput from '../input/MessageInput.jsx'
 import ChatList from '../ChatComponent/ChatList.jsx'
@@ -19,7 +19,7 @@ import ModalDelete from '../Modals/ModalDelete.jsx'
 
 const Chats = () => {
   const navigate = useNavigate()
-  const token = useSelector(selectToken)
+  const token = localStorage.getItem('JWT')
   const activeChat = useSelector(selectActive)
   const dispatch = useDispatch()
   const messages = useSelector(selectMessages)

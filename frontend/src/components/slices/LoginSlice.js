@@ -53,19 +53,17 @@ const loginSlice = createSlice({
     auth: false,
     status: null,
     error: null,
-    token: null,
     userName: '',
   },
   reducers: {
     restoreAuth: (state) => {
       const token = localStorage.getItem('JWT')
-      if (token) {
-        state.token = token
+      if (token !== null) {
         state.auth = true
       }
     },
     logOut: (state) => {
-      state.token = null
+      localStorage.removeItem('JWT')
       state.auth = false
     },
   },
@@ -78,7 +76,6 @@ const loginSlice = createSlice({
       .addCase(fetchJWS.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.auth = true
-        state.token = action.payload.token
         state.error = null
         state.userName = action.payload.userName
       })
@@ -94,7 +91,6 @@ const loginSlice = createSlice({
       .addCase(signup.fulfilled, (state, action) => {
         state.status = 'succeeded'
         state.auth = true
-        state.token = action.payload.token
         state.error = null
         state.userName = action.payload.userName
       })

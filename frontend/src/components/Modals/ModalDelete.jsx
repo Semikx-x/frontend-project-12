@@ -12,7 +12,6 @@ const ModalDelete = () => {
 
   const handleClose = () => dispatch(closeDeleteModal())
 
-  console.log('deleteLog')
   if (!type.isOpen) return null
 
   const handleDelete = async () => {
