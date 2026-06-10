@@ -12,18 +12,18 @@ const MessageInput = () => {
 
   const inputRef = useRef(null)
 
+  const formikRef = useRef(null)
+
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus()
-    }
+    inputRef.current?.focus()
+    formikRef.current?.resetForm()
   }, [activeChat])
 
   const renderMessages = async (values, { resetForm, setSubmitting, setErrors }) => {
     const message = { body: values.body, channelId: activeChat.id, userName: user }
     const result = await dispatch(addMessage(message)).unwrap()
-
+    resetForm()
     if (addMessage.fulfilled.match(result)) {
-      resetForm()
       inputRef.current?.focus()
     }
     else {
@@ -34,6 +34,7 @@ const MessageInput = () => {
 
   return (
     <Formik
+      innerRef={formikRef}
       initialValues={{ body: '' }}
       onSubmit={renderMessages}
     >

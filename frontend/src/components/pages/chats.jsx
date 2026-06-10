@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { io } from 'socket.io-client'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -28,6 +28,8 @@ const Chats = () => {
   filter.add(filter.getDictionary('en'))
   filter.add(filter.getDictionary('ru'))
   const isAuth = useSelector(selectAuth)
+
+  const messagesEndRef = useRef(null)
 
   useEffect(() => {
     if (!isAuth) {
@@ -78,6 +80,10 @@ const Chats = () => {
     dispatch(fetchMessages(token))
   }, [activeChat, dispatch, token])
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, activeChat])
+
   const handleOut = async () => {
     await dispatch(logOut()).unwrap
     localStorage.removeItem('JWT')
@@ -119,7 +125,7 @@ const Chats = () => {
           </button>
         </header>
 
-        <div className="flex-grow-1 p-4 d-flex flex-column gap-3 overflow-auto">
+        <div className="flex-grow-1 p-4 d-flex flex-column gap-3 overflow-auto align-items-start">
           {messages
             .filter(message => message.channelId === activeChat?.id)
             .map(message => (
@@ -128,10 +134,11 @@ const Chats = () => {
                 className="bg-white p-3 rounded shadow-sm border border-light align-self-start"
                 style={{ maxWidth: '75%' }}
               >
-                <div className="fw-bold small text-muted mb-1">{message.userName}</div>
-                <div className="text-break">{filter.clean(message.body)}</div>
+                <div className="fw-bold small text-muted mb-1 text-start">{message.userName}</div>
+                <div className="text-break text-start">{filter.clean(message.body)}</div>
               </div>
             ))}
+          <div ref={messagesEndRef} />
         </div>
         <div className="p-3 bg-white border-top">
           <MessageInput />
